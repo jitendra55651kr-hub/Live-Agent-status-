@@ -1,221 +1,262 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Live Agent Status Cashpore Unit 2</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        body { background-color: #0f172a; color: #f8fafc; font-family: 'Segoe UI', Roboto, sans-serif; }
-        .glass-card { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
-        .tab-active { border-b-4 border-indigo-500 text-indigo-400 font-bold; background: rgba(99, 102, 241, 0.1); }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Live Agent Status Cashpore Unit 2</title>
+  <!-- Chart.js & SheetJS for Excel/CSV parsing -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+    body { background-color: #0f172a; color: #f8fafc; padding: 20px; }
+    header { text-align: center; margin-bottom: 25px; padding: 20px; background: linear-gradient(135deg, #1e293b, #0f172a); border-radius: 12px; border: 1px solid #334155; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+    h1 { color: #38bdf8; font-size: 26px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 15px; }
+    .upload-container { display: flex; justify-content: center; align-items: center; gap: 15px; flex-wrap: wrap; }
+    input[type="file"] { display: none; }
+    .custom-file-upload { background: #2563eb; color: white; padding: 10px 24px; border-radius: 8px; cursor: pointer; font-weight: 600; transition: 0.3s; box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4); }
+    .custom-file-upload:hover { background: #1d4ed8; }
+    .file-name { font-size: 14px; color: #94a3b8; }
+    .summary-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin-bottom: 30px; }
+    .card { background: #1e293b; padding: 18px; border-radius: 10px; border-left: 4px solid #38bdf8; border: 1px solid #334155; }
+    .card h3 { font-size: 12px; color: #94a3b8; text-transform: uppercase; margin-bottom: 5px; }
+    .card p { font-size: 22px; font-weight: 700; color: #f1f5f9; }
+    
+    .team-section { background: #1e293b; border-radius: 12px; border: 1px solid #334155; margin-bottom: 30px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
+    .team-header { background: #334155; padding: 12px 20px; font-size: 18px; font-weight: 700; color: #38bdf8; letter-spacing: 0.5px; border-bottom: 2px solid #0284c7; }
+    
+    .table-responsive { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; text-align: left; font-size: 13px; }
+    th { background-color: #0f172a; color: #cbd5e1; padding: 12px; font-weight: 600; border-bottom: 1px solid #334155; text-transform: uppercase; font-size: 11px; }
+    td { padding: 10px 12px; border-bottom: 1px solid #1e293b; color: #e2e8f0; }
+    tr:nth-child(even) { background-color: #182232; }
+    tr:hover { background-color: #26334d; }
+    .agent-name { font-weight: 600; color: #f8fafc; }
+    .metric-val { text-align: center; }
+  </style>
 </head>
-<body class="p-6">
+<body>
 
-    <header class="mb-8 text-center">
-        <h1 class="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-500 uppercase tracking-wider mb-2">
-            live Agent status cashpore unit 2
-        </h1>
-        <p class="text-slate-400 text-sm">Upload your daily Excel/CSV sheet to generate instant team performance analytics</p>
-    </header>
-
-    <div class="max-w-xl mx-auto mb-8 glass-card p-6 rounded-2xl text-center shadow-2xl">
-        <label for="fileInput" class="cursor-pointer flex flex-col items-center justify-center border-2 border-dashed border-indigo-500/50 hover:border-indigo-400 p-6 rounded-xl transition duration-300">
-            <i class="fas fa-file-excel text-4xl text-emerald-400 mb-2"></i>
-            <span class="text-slate-200 font-semibold">Upload Excel / CSV File</span>
-            <span class="text-xs text-slate-400 mt-1">.xlsx, .xls, .csv supported</span>
-            <input type="file" id="fileInput" accept=".xlsx, .xls, .csv" class="hidden" />
-        </label>
-        <div id="fileName" class="text-xs text-emerald-400 mt-2 font-mono"></div>
+  <header>
+    <h1>LIVE AGENT STATUS CASHPORE UNIT 2</h1>
+    <div class="upload-container">
+      <label for="fileInput" class="custom-file-upload">
+        📁 Upload Excel / CSV File
+      </label>
+      <input type="file" id="fileInput" accept=".csv, .xlsx, .xls">
+      <span class="file-name" id="fileName">No file chosen</span>
     </div>
+  </header>
 
-    <div id="dashboardContent" class="hidden">
-        <div class="flex flex-wrap justify-center gap-2 mb-6 border-b border-slate-700 pb-2" id="teamTabs">
-            <button onclick="switchTeam('TEAM JITENDRA')" class="team-tab px-5 py-3 rounded-t-lg font-medium transition cursor-pointer" id="tab-TEAM JITENDRA">TEAM JITENDRA</button>
-            <button onclick="switchTeam('TEAM DEEPTI')" class="team-tab px-5 py-3 rounded-t-lg font-medium transition cursor-pointer" id="tab-TEAM DEEPTI">TEAM DEEPTI</button>
-            <button onclick="switchTeam('TEAM RAVI')" class="team-tab px-5 py-3 rounded-t-lg font-medium transition cursor-pointer" id="tab-TEAM RAVI">TEAM RAVI</button>
-            <button onclick="switchTeam('TEAM SHIVAM')" class="team-tab px-5 py-3 rounded-t-lg font-medium transition cursor-pointer" id="tab-TEAM SHIVAM">TEAM SHIVAM</button>
-            <button onclick="switchTeam('TEAM ISHANT')" class="team-tab px-5 py-3 rounded-t-lg font-medium transition cursor-pointer" id="tab-TEAM ISHANT">TEAM ISHANT</button>
-        </div>
+  <div class="summary-cards" id="summaryCards">
+    <div class="card"><h3>Total Booked</h3><p id="totBooked">0</p></div>
+    <div class="card"><h3>Total Done</h3><p id="totDone">0</p></div>
+    <div class="card"><h3>Total Chk Doc</h3><p id="totChkDoc">0</p></div>
+    <div class="card"><h3>Total FDB</h3><p id="totFdb">0</p></div>
+    <div class="card"><h3>Total Conn FDB</h3><p id="totConnFdb">0</p></div>
+  </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-            <div class="glass-card p-5 rounded-xl shadow">
-                <h3 class="text-lg font-bold text-slate-200 mb-4 flex items-center gap-2">
-                    <i class="fas fa-chart-bar text-indigo-400"></i> Consultations Overview
-                </h3>
-                <canvas id="consultationChart" class="max-h-64"></canvas>
-            </div>
-            <div class="glass-card p-5 rounded-xl shadow">
-                <h3 class="text-lg font-bold text-slate-200 mb-4 flex items-center gap-2">
-                    <i class="fas fa-chart-pie text-purple-400"></i> FDB Breakdown
-                </h3>
-                <canvas id="fdbChart" class="max-h-64"></canvas>
-            </div>
-        </div>
+  <div id="teamsContainer"></div>
 
-        <div class="glass-card rounded-2xl overflow-hidden shadow-2xl">
-            <div class="p-4 bg-slate-800/80 border-b border-slate-700 flex justify-between items-center">
-                <h2 id="currentTeamTitle" class="text-xl font-bold text-indigo-400 tracking-wide">TEAM JITENDRA</h2>
-            </div>
-            
-            <div class="overflow-x-auto">
-                <table class="w-full text-left text-sm text-slate-300">
-                    <thead class="bg-slate-900/90 text-xs uppercase tracking-wider text-slate-400 border-b border-slate-700">
-                        <tr>
-                            <th class="p-4">Agent Name</th>
-                            <th class="p-4 text-center">Gmeet Video</th>
-                            <th class="p-4 text-center">Book Consultation</th>
-                            <th class="p-4 text-center">Done Consultation</th>
-                            <th class="p-4 text-center">Camp Cases (Done-Video)</th>
-                            <th class="p-4 text-center">Chk Doc</th>
-                            <th class="p-4 text-center">FDB</th>
-                            <th class="p-4 text-center">Connected FDB</th>
-                            <th class="p-4 text-center">IMM FDB</th>
-                            <th class="p-4 text-center">Connected IMM FDB</th>
-                        </tr>
-                    </thead>
-                    <tbody id="agentTableBody" class="divide-y divide-slate-800">
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
+  <script>
+    const TEAMS = {
+      "TEAM JITENDRA": [
+        "Saurabh", "Md anas", "Renu Gupta", "Shivam verma", 
+        "Jogender singh", "Jayshree Choudhary", "Snigdha pal", 
+        "Rashi Gupta", "Kiran thakur", "Jayshree"
+      ],
+      "TEAM DEEPTI": [
+        "Renu Rani", "Pooja Rathore", "ROSHNI PRAJAPATI", "GARVIT JHA", 
+        "Rajni Saini", "Puja Chauhan", "Shivansh tiwari", "Saifur Janam", 
+        "Anjali Gupta", "Roshni chouhan"
+      ],
+      "TEAM RAVI": [
+        "Jyoti Singh unit 2", "Rajendra Mourya", "Apurv Acharya", 
+        "Amit Sharma", "Atul Kumar", "Sumit H", "Piyush Verma", 
+        "Shivam Shukla", "Ravi kumar"
+      ],
+      "TEAM SHIVAM": [
+        "Shivam saxena", "Nandani", "Kamni Sharma", "Burhan", 
+        "Chandrabhanu", "Munsi", "Ashish Yadav"
+      ],
+      "TEAM ISHANT": [
+        "Ayushi Saxena", "Harivansh Agarwal", "Isha Mehta", 
+        "Smruti Rani Sahoo", "Sushma Chaudhary", "Ashok Pawar", 
+        "PRIYA PATIDAR", "YASHWANT SINGH", "Sanjana Khuswaha", 
+        "MOHD SHAKIB", "Snehal Sukhadeo Gaikwad", "Abuzar Akhtar", 
+        "Ishant", "Sushma", "Isha mehta"
+      ]
+    };
 
-    <script>
-        const teamMapping = {
-            "TEAM JITENDRA": ["Saurabh", "Md anas", "Renu Gupta", "Shivam verma", "Jogender singh", "Jayshree Choudhary", "Snigdha pal", "Rashi Gupta", "Kiran thakur"],
-            "TEAM DEEPTI": ["Renu Rani", "Pooja Rathore", "ROSHNI PRAJAPATI", "GARVIT JHA", "Rajni Saini", "Puja Chauhan", "Shivansh tiwari", "Saifur Janam", "Anjali Gupta", "Roshni chouhan"],
-            "TEAM RAVI": ["Jyoti Singh unit 2", "Rajendra Mourya", "Apurv Acharya", "Amit Sharma", "Atul Kumar", "Sumit H", "Piyush Verma", "Shivam Shukla"],
-            "TEAM SHIVAM": ["Shivam saxena", "Nandani", "Kamni Sharma", "Burhan", "Chandrabhanu", "Munsi", "Ashish Yadav"],
-            "TEAM ISHANT": ["Ayushi Saxena", "Harivansh Agarwal", "Isha Mehta", "Smruti­rani Sahoo", "Sushma Chaudhary", "Ashok Pawar", "PRIYA PATIDAR", "YASHWANT SINGH", "Sanjana Khuswaha", "MOHD SHAKIB", "Snehal Sukhadeo Gaikwad", "Abuzar Akhtar"]
+    document.getElementById('fileInput').addEventListener('change', handleFile);
+
+    function handleFile(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      document.getElementById('fileName').innerText = file.name;
+
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        const data = new Uint8Array(evt.target.result);
+        const workbook = XLSX.read(data, { type: 'array' });
+        const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+        const rawRows = XLSX.utils.sheet_to_json(firstSheet, { header: 1 });
+        processData(rawRows);
+      };
+      reader.readAsArrayBuffer(file);
+    }
+
+    function cleanString(str) {
+      if (!str) return '';
+      return String(str).toLowerCase().replace(/[^a-z0-9]/g, '');
+    }
+
+    function processData(rows) {
+      let headerRowIndex = -1;
+      let colMap = {};
+
+      for (let i = 0; i < Math.min(20, rows.length); i++) {
+        const row = rows[i];
+        if (!row) continue;
+        row.forEach((cell, colIdx) => {
+          const val = cleanString(cell);
+          if (val === 'agent' || val === 'agentname' || val === 'name') colMap['agent'] = colIdx;
+          if (val.includes('gmeet')) colMap['gmeet'] = colIdx;
+          if (val === 'booked' || val.includes('book')) colMap['booked'] = colIdx;
+          if (val === 'done' || val.includes('doneconsultation')) colMap['done'] = colIdx;
+          if (val.includes('camp') || val.includes('videocall')) colMap['camp'] = colIdx;
+          if (val.includes('chkdoc') || val.includes('checkdoc')) colMap['chkdoc'] = colIdx;
+          if (val === 'fdb') colMap['fdb'] = colIdx;
+          if (val.includes('connectedfdb') && !val.includes('imm')) colMap['conn_fdb'] = colIdx;
+          if (val === 'immfdb') colMap['imm_fdb'] = colIdx;
+          if (val.includes('connectedimmfdb') || val.includes('connimm')) colMap['conn_imm_fdb'] = colIdx;
+        });
+
+        if (colMap['agent'] !== undefined) {
+          headerRowIndex = i;
+          break;
+        }
+      }
+
+      if (headerRowIndex === -1) {
+        alert("Could not find 'Agent' column in the uploaded sheet. Please check file structure.");
+        return;
+      }
+
+      const agentStatsMap = {};
+
+      for (let i = headerRowIndex + 1; i < rows.length; i++) {
+        const row = rows[i];
+        if (!row || !row[colMap['agent']]) continue;
+
+        const rawName = String(row[colMap['agent']]).trim();
+        const cleanName = cleanString(rawName);
+
+        const getNum = (colKey) => {
+          if (colMap[colKey] === undefined) return 0;
+          const val = parseFloat(row[colMap[colKey]]);
+          return isNaN(val) ? 0 : val;
         };
 
-        let parsedData = [];
-        let activeTeam = "TEAM JITENDRA";
-        let barChartInstance = null;
-        let pieChartInstance = null;
+        agentStatsMap[cleanName] = {
+          displayName: rawName,
+          gmeet: getNum('gmeet'),
+          booked: getNum('booked'),
+          done: getNum('done'),
+          camp: getNum('camp'),
+          chkdoc: getNum('chkdoc'),
+          fdb: getNum('fdb'),
+          conn_fdb: getNum('conn_fdb'),
+          imm_fdb: getNum('imm_fdb'),
+          conn_imm_fdb: getNum('conn_imm_fdb')
+        };
+      }
 
-        document.getElementById('fileInput').addEventListener('change', handleFile);
+      renderDashboard(agentStatsMap);
+    }
 
-        function handleFile(e) {
-            const file = e.target.files[0];
-            if (!file) return;
+    function renderDashboard(agentStatsMap) {
+      const container = document.getElementById('teamsContainer');
+      container.innerHTML = '';
 
-            document.getElementById('fileName').innerText = `Uploaded File: ${file.name}`;
-            const reader = new FileReader();
+      let gTotBooked = 0, gTotDone = 0, gTotChk = 0, gTotFdb = 0, gTotConnFdb = 0;
 
-            reader.onload = function(evt) {
-                const data = new Uint8Array(evt.target.result);
-                const workbook = XLSX.read(data, { type: 'array' });
-                const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
-                
-                parsedData = XLSX.utils.sheet_to_json(firstSheet, { defval: 0 });
-                document.getElementById('dashboardContent').classList.remove('hidden');
-                switchTeam(activeTeam);
-            };
+      Object.keys(TEAMS).forEach(teamName => {
+        const members = TEAMS[teamName];
+        let tableRows = '';
 
-            reader.readAsArrayBuffer(file);
-        }
+        members.forEach(member => {
+          const cleanMem = cleanString(member);
+          let stats = agentStatsMap[cleanMem];
 
-        function switchTeam(teamName) {
-            activeTeam = teamName;
-            document.querySelectorAll('.team-tab').forEach(tab => tab.classList.remove('tab-active'));
-            document.getElementById(`tab-${teamName}`).classList.add('tab-active');
-            document.getElementById('currentTeamTitle').innerText = teamName;
-            renderData();
-        }
+          if (!stats) {
+            const key = Object.keys(agentStatsMap).find(k => k.includes(cleanMem) || cleanMem.includes(k));
+            if (key) stats = agentStatsMap[key];
+          }
 
-        function renderData() {
-            const tbody = document.getElementById('agentTableBody');
-            tbody.innerHTML = '';
-            const currentTeamAgents = teamMapping[activeTeam].map(a => a.toLowerCase().trim());
+          const s = stats || {
+            gmeet: 0, booked: 0, done: 0, camp: 0, 
+            chkdoc: 0, fdb: 0, conn_fdb: 0, imm_fdb: 0, conn_imm_fdb: 0
+          };
 
-            const filteredData = parsedData.filter(row => {
-                const agentName = String(row['Agent Name'] || row['Agent'] || row['Name'] || '').toLowerCase().trim();
-                return currentTeamAgents.some(a => agentName.includes(a) || a.includes(agentName));
-            });
+          gTotBooked += s.booked;
+          gTotDone += s.done;
+          gTotChk += s.chkdoc;
+          gTotFdb += s.fdb;
+          gTotConnFdb += s.conn_fdb;
 
-            let totals = { gmeet: 0, book: 0, done: 0, camp: 0, chkDoc: 0, fdb: 0, connFdb: 0, immFdb: 0, connImmFdb: 0 };
+          tableRows += `
+            <tr>
+              <td class="agent-name">${member}</td>
+              <td class="metric-val">${s.gmeet}</td>
+              <td class="metric-val">${s.booked}</td>
+              <td class="metric-val">${s.done}</td>
+              <td class="metric-val">${s.camp}</td>
+              <td class="metric-val">${s.chkdoc}</td>
+              <td class="metric-val">${s.fdb}</td>
+              <td class="metric-val">${s.conn_fdb}</td>
+              <td class="metric-val">${s.imm_fdb}</td>
+              <td class="metric-val">${s.conn_imm_fdb}</td>
+            </tr>
+          `;
+        });
 
-            if(filteredData.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="10" class="text-center p-6 text-slate-500">No agent data found for ${activeTeam} in this file.</td></tr>`;
-            } else {
-                filteredData.forEach(row => {
-                    const gmeet = Number(row['Gmeet Video'] || row['gmeet'] || 0);
-                    const book = Number(row['Book consultation'] || row['Book Consultation'] || 0);
-                    const done = Number(row['Done consultation'] || row['Done Consultation'] || 0);
-                    const camp = Number(row['camp cases (Done-video call)'] || row['Camp Cases'] || 0);
-                    const chkDoc = Number(row['chk doc'] || row['Check Doc'] || 0);
-                    const fdb = Number(row['fdb'] || row['FDB'] || 0);
-                    const connFdb = Number(row['connected FDB'] || row['Connected FDB'] || 0);
-                    const immFdb = Number(row['IMM FDB'] || row['imm fdb'] || 0);
-                    const connImmFdb = Number(row['CONNECTED IMM FDB'] || row['Connected IMM FDB'] || 0);
+        const teamHtml = `
+          <div class="team-section">
+            <div class="team-header">${teamName}</div>
+            <div class="table-responsive">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Agent Name</th>
+                    <th style="text-align:center">Gmeet Video</th>
+                    <th style="text-align:center">Book Consultation</th>
+                    <th style="text-align:center">Done Consultation</th>
+                    <th style="text-align:center">Camp Cases (Done-Video)</th>
+                    <th style="text-align:center">Chk Doc</th>
+                    <th style="text-align:center">FDB</th>
+                    <th style="text-align:center">Connected FDB</th>
+                    <th style="text-align:center">IMM FDB</th>
+                    <th style="text-align:center">Connected IMM FDB</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${tableRows}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        `;
+        container.innerHTML += teamHtml;
+      });
 
-                    totals.gmeet += gmeet;
-                    totals.book += book;
-                    totals.done += done;
-                    totals.camp += camp;
-                    totals.chkDoc += chkDoc;
-                    totals.fdb += fdb;
-                    totals.connFdb += connFdb;
-                    totals.immFdb += immFdb;
-                    totals.connImmFdb += connImmFdb;
-
-                    const tr = document.createElement('tr');
-                    tr.className = "hover:bg-slate-800/40 transition";
-                    tr.innerHTML = `
-                        <td class="p-4 font-semibold text-slate-200">${row['Agent Name'] || row['Agent'] || row['Name']}</td>
-                        <td class="p-4 text-center font-mono">${gmeet}</td>
-                        <td class="p-4 text-center font-mono text-blue-400">${book}</td>
-                        <td class="p-4 text-center font-mono text-emerald-400">${done}</td>
-                        <td class="p-4 text-center font-mono">${camp}</td>
-                        <td class="p-4 text-center font-mono">${chkDoc}</td>
-                        <td class="p-4 text-center font-mono">${fdb}</td>
-                        <td class="p-4 text-center font-mono text-purple-400">${connFdb}</td>
-                        <td class="p-4 text-center font-mono">${immFdb}</td>
-                        <td class="p-4 text-center font-mono text-indigo-400">${connImmFdb}</td>
-                    `;
-                    tbody.appendChild(tr);
-                });
-            }
-
-            updateCharts(totals);
-        }
-
-        function updateCharts(totals) {
-            if(barChartInstance) barChartInstance.destroy();
-            if(pieChartInstance) pieChartInstance.destroy();
-
-            const ctx1 = document.getElementById('consultationChart').getContext('2d');
-            barChartInstance = new Chart(ctx1, {
-                type: 'bar',
-                data: {
-                    labels: ['Gmeet', 'Booked', 'Done', 'Camp Cases', 'Chk Doc'],
-                    datasets: [{
-                        data: [totals.gmeet, totals.book, totals.done, totals.camp, totals.chkDoc],
-                        backgroundColor: ['#6366f1', '#3b82f6', '#10b981', '#f59e0b', '#ec4899']
-                    }]
-                },
-                options: { responsive: true, plugins: { legend: { display: false } } }
-            });
-
-            const ctx2 = document.getElementById('fdbChart').getContext('2d');
-            pieChartInstance = new Chart(ctx2, {
-                type: 'doughnut',
-                data: {
-                    labels: ['FDB', 'Connected FDB', 'IMM FDB', 'Connected IMM FDB'],
-                    datasets: [{
-                        data: [totals.fdb, totals.connFdb, totals.immFdb, totals.connImmFdb],
-                        backgroundColor: ['#8b5cf6', '#a855f7', '#d946ef', '#06b6d4']
-                    }]
-                },
-                options: { responsive: true }
-            });
-        }
-    </script>
+      document.getElementById('totBooked').innerText = gTotBooked.toLocaleString();
+      document.getElementById('totDone').innerText = gTotDone.toLocaleString();
+      document.getElementById('totChkDoc').innerText = gTotChk.toLocaleString();
+      document.getElementById('totFdb').innerText = gTotFdb.toLocaleString();
+      document.getElementById('totConnFdb').innerText = gTotConnFdb.toLocaleString();
+    }
+  </script>
 </body>
 </html>
