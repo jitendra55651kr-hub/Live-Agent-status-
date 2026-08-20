@@ -59,22 +59,22 @@
       margin-bottom: 30px; 
     }
     
-    /* Base Score Card Style */
+    /* Uniform Dark Style For ALL Cards (Matching Total Agents) */
     .card { 
-      background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%); 
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); 
       padding: 16px 10px; 
       border-radius: 12px; 
-      border: 1px solid #cbd5e1; 
-      border-top: 5px solid #2563eb; 
+      border: 1px solid #0f172a; 
+      border-top: 5px solid #38bdf8; 
       text-align: center; 
-      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06); 
+      box-shadow: 0 6px 16px rgba(15, 23, 42, 0.3); 
       transition: transform 0.2s ease, box-shadow 0.2s ease; 
     }
-    .card:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(15, 23, 42, 0.12); }
+    .card:hover { transform: translateY(-3px); box-shadow: 0 10px 22px rgba(15, 23, 42, 0.4); }
     
     .card h3 { 
       font-size: 11px; 
-      color: #475569; 
+      color: #94a3b8; 
       text-transform: uppercase; 
       margin-bottom: 8px; 
       font-weight: 800; 
@@ -83,18 +83,8 @@
     .card p { 
       font-size: 26px; 
       font-weight: 900; 
-      color: #1e40af; 
+      color: #ffffff; 
     }
-    
-    /* Total Agents Special Highlight Card */
-    .card.highlight-card { 
-      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); 
-      border: 1px solid #0f172a; 
-      border-top: 5px solid #38bdf8; 
-      box-shadow: 0 6px 16px rgba(15, 23, 42, 0.3);
-    }
-    .card.highlight-card h3 { color: #94a3b8; }
-    .card.highlight-card p { color: #ffffff; }
 
     /* Team Table Section */
     .team-section { background: #ffffff; border-radius: 12px; border: 1px solid #cbd5e1; margin-bottom: 30px; overflow: hidden; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); }
@@ -136,7 +126,7 @@
 
   <!-- Top Summary Cards -->
   <div class="summary-cards" id="summaryCards">
-    <div class="card highlight-card"><h3>Total Agents</h3><p id="totAgents">0</p></div>
+    <div class="card"><h3>Total Agents</h3><p id="totAgents">0</p></div>
     <div class="card"><h3>Book Consultation</h3><p id="totBooked">0</p></div>
     <div class="card"><h3>Done Consultation</h3><p id="totDone">0</p></div>
     <div class="card"><h3>Clinic Video Call</h3><p id="totVideoCall">0</p></div>
