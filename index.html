@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Agent Hourly Report</title>
+  <!-- SheetJS for Excel/CSV Parsing -->
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
   <style>
@@ -50,6 +51,7 @@
     </div>
   </header>
 
+  <!-- Top Summary Cards -->
   <div class="summary-cards" id="summaryCards">
     <div class="card"><h3>Total Agents</h3><p id="totAgents">0</p></div>
     <div class="card"><h3>Book Consultation</h3><p id="totBooked">0</p></div>
@@ -67,7 +69,7 @@
   <script>
     const TEAMS = {
       "TEAM JITENDRA": [
-        "Saurabh", "Md anas", "Renu Gupta", "Shivam verma", 
+        "Saurav Pal", "Md anas", "Renu Gupta", "Shivam verma", 
         "Jogender singh", "Jayshree Choudhary", "Snigdha pal", 
         "Rashi Gupta", "Kiran thakur", "Jayshree", "Kiran Singh"
       ],
@@ -121,7 +123,6 @@
       let headerRowIndex = -1;
       let colMap = {};
 
-      // Detect header row dynamically
       for (let i = 0; i < Math.min(20, rows.length); i++) {
         const row = rows[i];
         if (!row) continue;
@@ -131,7 +132,7 @@
           if (val === 'agent' || val === 'agentname' || val === 'name') colMap['agent'] = colIdx;
           if (val.includes('booked')) colMap['booked'] = colIdx;
           if (val.includes('done')) colMap['done'] = colIdx;
-          if (val.includes('videocall') || val.includes('clinicvideo')) colMap['videocall'] = colIdx;
+          if (val.includes('videocall') || val.includes('clinicvideo') || val === 'teledoc') colMap['videocall'] = colIdx;
           if (val.includes('chkdoc') || val.includes('checkdoc')) colMap['chkdoc'] = colIdx;
           
           if (val === 'immfdb') colMap['imm_fdb'] = colIdx;
@@ -199,8 +200,13 @@
           const cleanMem = cleanString(member);
           let stats = agentStatsMap[cleanMem];
 
+          // Flexible Matching Logic (Handles Saurabh/Saurav & Partial Names)
           if (!stats) {
-            const key = Object.keys(agentStatsMap).find(k => k.includes(cleanMem) || cleanMem.includes(k));
+            const key = Object.keys(agentStatsMap).find(k => {
+              const cleanMemAlt = cleanMem.replace('saurabh', 'saurav');
+              const kAlt = k.replace('saurabh', 'saurav');
+              return k.includes(cleanMem) || cleanMem.includes(k) || kAlt.includes(cleanMemAlt) || cleanMemAlt.includes(kAlt);
+            });
             if (key) stats = agentStatsMap[key];
           }
 
