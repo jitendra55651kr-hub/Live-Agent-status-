@@ -91,10 +91,10 @@
     .team-section { 
       background: #ffffff; 
       border-radius: 12px; 
-      border: 2px solid #cbd5e1; 
+      border: 2px solid #64748b; 
       margin-bottom: 30px; 
       overflow: hidden; 
-      box-shadow: 0 6px 16px rgba(15, 23, 42, 0.08); 
+      box-shadow: 0 6px 16px rgba(15, 23, 42, 0.1); 
     }
     
     /* Dark Slate Gradient Team Header Bar */
@@ -105,21 +105,21 @@
       font-weight: 900; 
       color: #ffffff; 
       letter-spacing: 1px; 
-      border-bottom: 2px solid #334155; 
+      border-bottom: 2px solid #64748b; 
       text-transform: uppercase; 
     }
     
     .table-responsive { overflow-x: auto; }
     table { width: 100%; border-collapse: collapse; text-align: left; }
     
-    /* Dark Professional Column Headers */
+    /* Dark Column Headers with Bold Borders */
     th { 
       background-color: #1e293b; 
       color: #ffffff; 
       padding: 14px 12px; 
       font-weight: 800; 
-      border-bottom: 2px solid #0f172a; 
-      border-right: 1px solid #334155; 
+      border-bottom: 2px solid #64748b; 
+      border-right: 2px solid #64748b; 
       text-transform: uppercase; 
       font-size: 12px; 
       text-align: center; 
@@ -128,17 +128,18 @@
     th:first-child { text-align: left; padding-left: 18px; }
     th:last-child { border-right: none; }
     
-    /* Data Cells with Solid Gridlines */
+    /* Data Cells with BOLD Gridlines (2px thickness) */
     td { 
       padding: 13px 12px; 
-      border-bottom: 1px solid #cbd5e1; 
-      border-right: 1px solid #cbd5e1; 
+      border-bottom: 2px solid #94a3b8; 
+      border-right: 2px solid #94a3b8; 
       color: #0f172a; 
       font-weight: 800; 
       font-size: 15px; 
     }
     td:last-child { border-right: none; }
     
+    tr:last-child td { border-bottom: none; }
     tr:nth-child(even) { background-color: #f8fafc; }
     tr:nth-child(odd) { background-color: #ffffff; }
     tr:hover { background-color: #e0f2fe; }
