@@ -1,243 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Live Agent Status Cashpore Unit 2</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <style>
-        body { background-color: #0f172a; color: #f8fafc; font-family: 'Segoe UI', Roboto, sans-serif; }
-        .glass-card { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
-        .tab-active { border-b-4 border-indigo-500 text-indigo-400 font-bold; background: rgba(99, 102, 241, 0.1); }
-    </style>
-</head>
-<body class="p-6">
+import pandas as pd
 
-    <header class="mb-8 text-center">
-        <h1 class="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-500 uppercase tracking-wider mb-2">
-            live Agent status cashpore unit 2
-        </h1>
-        <p class="text-slate-400 text-sm">Upload your daily Excel/CSV sheet to generate instant team performance analytics</p>
-    </header>
+# Load file
+df = pd.read_excel('Agent Stats (12).xlsx')
 
-    <div class="max-w-xl mx-auto mb-8 glass-card p-6 rounded-2xl text-center shadow-2xl">
-        <label for="fileInput" class="cursor-pointer flex flex-col items-center justify-center border-2 border-dashed border-indigo-500/50 hover:border-indigo-400 p-6 rounded-xl transition duration-300">
-            <i class="fas fa-file-excel text-4xl text-emerald-400 mb-2"></i>
-            <span class="text-slate-200 font-semibold">Upload Excel / CSV File</span>
-            <span class="text-xs text-slate-400 mt-1">.xlsx, .xls, .csv supported</span>
-            <input type="file" id="fileInput" accept=".xlsx, .xls, .csv" class="hidden" />
-        </label>
-        <div id="fileName" class="text-xs text-emerald-400 mt-2 font-mono"></div>
-    </div>
+# Team Mapping (Jaisa aapne bataya)
+team_mapping = {
+    'TEAM JITENDRA': ['Saurabh', 'Md anas', 'Renu Gupta', 'Shivam verma', 'Jogender singh', 'Jayshree Choudhary', 'Snigdha pal', 'Rashi Gupta', 'Kiran thakur'],
+    'TEAM DEEPTI': ['Renu Rani', 'Pooja Rathore', 'ROSHNI PRAJAPATI', 'GARVIT JHA', 'Rajni Saini', 'Puja Chauhan', 'Shivansh tiwari', 'Saifur Janam', 'Anjali Gupta', 'Roshni chouhan'],
+    'TEAM RAVI': ['Jyoti Singh unit 2', 'Rajendra Mourya', 'Apurv Acharya', 'Amit Sharma', 'Atul Kumar', 'Sumit H', 'Piyush Verma', 'Shivam Shukla'],
+    'TEAM SHIVAM': ['Shivam saxena', 'Nandani', 'Kamni Sharma', 'Burhan', 'Chandrabhanu', 'Munsi', 'Ashish Yadav'],
+    'TEAM ISHANT': ['Ayushi Saxena', 'Harivansh Agarwal', 'Isha Mehta', 'Smrutirani Sahoo', 'Sushma Chaudhary', 'Ashok Pawar', 'PRIYA PATIDAR', 'YASHWANT SINGH', 'Sanjana Khuswaha', 'MOHD SHAKIB', 'Snehal Sukhadeo Gaikwad', 'Abuzar Akhtar']
+}
 
-    <div id="dashboardContent" class="hidden">
-        
-        <div class="flex flex-wrap justify-center gap-2 mb-6 border-b border-slate-700 pb-2" id="teamTabs">
-            <button onclick="switchTeam('TEAM JITENDRA')" class="team-tab px-5 py-3 rounded-t-lg font-medium transition cursor-pointer" id="tab-TEAM JITENDRA">TEAM JITENDRA</button>
-            <button onclick="switchTeam('TEAM DEEPTI')" class="team-tab px-5 py-3 rounded-t-lg font-medium transition cursor-pointer" id="tab-TEAM DEEPTI">TEAM DEEPTI</button>
-            <button onclick="switchTeam('TEAM RAVI')" class="team-tab px-5 py-3 rounded-t-lg font-medium transition cursor-pointer" id="tab-TEAM RAVI">TEAM RAVI</button>
-            <button onclick="switchTeam('TEAM SHIVAM')" class="team-tab px-5 py-3 rounded-t-lg font-medium transition cursor-pointer" id="tab-TEAM SHIVAM">TEAM SHIVAM</button>
-            <button onclick="switchTeam('TEAM ISHANT')" class="team-tab px-5 py-3 rounded-t-lg font-medium transition cursor-pointer" id="tab-TEAM ISHANT">TEAM ISHANT</button>
-        </div>
+# Flatten mapping for lookup
+all_agents = {agent.lower().strip(): team for team, agents in team_mapping.items() for agent in agents}
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-            <div class="glass-card p-5 rounded-xl shadow">
-                <h3 class="text-lg font-bold text-slate-200 mb-4 flex items-center gap-2">
-                    <i class="fas fa-chart-bar text-indigo-400"></i> Consultations Overview
-                </h3>
-                <canvas id="consultationChart" class="max-h-64"></canvas>
-            </div>
-            <div class="glass-card p-5 rounded-xl shadow">
-                <h3 class="text-lg font-bold text-slate-200 mb-4 flex items-center gap-2">
-                    <i class="fas fa-chart-pie text-purple-400"></i> FDB Breakdown
-                </h3>
-                <canvas id="fdbChart" class="max-h-64"></canvas>
-            </div>
-        </div>
+# Add Team Column
+df['Team'] = df['Agent Name'].apply(lambda x: all_agents.get(str(x).lower().strip(), 'Unassigned'))
 
-        <div class="glass-card rounded-2xl overflow-hidden shadow-2xl">
-            <div class="p-4 bg-slate-800/80 border-b border-slate-700 flex justify-between items-center">
-                <h2 id="currentTeamTitle" class="text-xl font-bold text-indigo-400 tracking-wide">TEAM JITENDRA</h2>
-                <span class="text-xs bg-indigo-500/20 text-indigo-300 px-3 py-1 rounded-full border border-indigo-500/30">Filtered View</span>
-            </div>
-            
-            <div class="overflow-x-auto">
-                <table class="w-full text-left text-sm text-slate-300">
-                    <thead class="bg-slate-900/90 text-xs uppercase tracking-wider text-slate-400 border-b border-slate-700">
-                        <tr>
-                            <th class="p-4">Agent Name</th>
-                            <th class="p-4 text-center">Gmeet Video</th>
-                            <th class="p-4 text-center">Book Consultation</th>
-                            <th class="p-4 text-center">Done Consultation</th>
-                            <th class="p-4 text-center">Camp Cases (Done-Video)</th>
-                            <th class="p-4 text-center">Chk Doc</th>
-                            <th class="p-4 text-center">FDB</th>
-                            <th class="p-4 text-center">Connected FDB</th>
-                            <th class="p-4 text-center">IMM FDB</th>
-                            <th class="p-4 text-center">Connected IMM FDB</th>
-                        </tr>
-                    </thead>
-                    <tbody id="agentTableBody" class="divide-y divide-slate-800">
-                        </tbody>
-                </table>
-            </div>
-        </div>
+# Keep only needed columns
+cols_to_keep = ['Agent Name', 'Team', 'Gmeet Video', 'Book consultation', 'Done consultation', 'Camp cases (Done-video call)', 'Check doc', 'FDB', 'Connected FDB', 'IMM FDB', 'CONNECTED IMM FDB']
+df_final = df[cols_to_keep]
 
-    </div>
-
-    <script>
-        // Mapping Teams & Agents
-        const teamMapping = {
-            "TEAM JITENDRA": ["Saurabh", "Md anas", "Renu Gupta", "Shivam verma", "Jogender singh", "Jayshree Choudhary", "Snigdha pal", "Rashi Gupta", "Kiran thakur"],
-            "TEAM DEEPTI": ["Renu Rani", "Pooja Rathore", "ROSHNI PRAJAPATI", "GARVIT JHA", "Rajni Saini", "Puja Chauhan", "Shivansh tiwari", "Saifur Janam", "Anjali Gupta", "Roshni chouhan"],
-            "TEAM RAVI": ["Jyoti Singh unit 2", "Rajendra Mourya", "Apurv Acharya", "Amit Sharma", "Atul Kumar", "Sumit H", "Piyush Verma", "Shivam Shukla"],
-            "TEAM SHIVAM": ["Shivam saxena", "Nandani", "Kamni Sharma", "Burhan", "Chandrabhanu", "Munsi", "Ashish Yadav"],
-            "TEAM ISHANT": ["Ayushi Saxena", "Harivansh Agarwal", "Isha Mehta", "Smruti­rani Sahoo", "Sushma Chaudhary", "Ashok Pawar", "PRIYA PATIDAR", "YASHWANT SINGH", "Sanjana Khuswaha", "MOHD SHAKIB", "Snehal Sukhadeo Gaikwad", "Abuzar Akhtar"]
-        };
-
-        let parsedData = [];
-        let activeTeam = "TEAM JITENDRA";
-        let barChartInstance = null;
-        let pieChartInstance = null;
-
-        document.getElementById('fileInput').addEventListener('change', handleFile);
-
-        function handleFile(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-
-            document.getElementById('fileName').innerText = `Uploaded File: ${file.name}`;
-            const reader = new FileReader();
-
-            reader.onload = function(evt) {
-                const data = new Uint8Array(evt.target.result);
-                const workbook = XLSX.read(data, { type: 'array' });
-                const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
-                
-                // Convert sheet to JSON
-                parsedData = XLSX.utils.sheet_to_json(firstSheet, { defval: 0 });
-                
-                // Unhide Dashboard
-                document.getElementById('dashboardContent').classList.remove('hidden');
-                
-                // Render Default View
-                switchTeam(activeTeam);
-            };
-
-            reader.readAsArrayBuffer(file);
-        }
-
-        function switchTeam(teamName) {
-            activeTeam = teamName;
-            
-            // Update Active Tab Styles
-            document.querySelectorAll('.team-tab').forEach(tab => tab.classList.remove('tab-active'));
-            document.getElementById(`tab-${teamName}`).classList.add('tab-active');
-            
-            document.getElementById('currentTeamTitle').innerText = teamName;
-
-            renderData();
-        }
-
-        function renderData() {
-            const tbody = document.getElementById('agentTableBody');
-            tbody.innerHTML = '';
-
-            const currentTeamAgents = teamMapping[activeTeam].map(a => a.toLowerCase().trim());
-
-            // Filter data only for relevant fields & active team members
-            const filteredData = parsedData.filter(row => {
-                const agentName = String(row['Agent Name'] || row['Agent'] || row['Name'] || '').toLowerCase().trim();
-                return currentTeamAgents.some(a => agentName.includes(a) || a.includes(agentName));
-            });
-
-            let totals = { gmeet: 0, book: 0, done: 0, camp: 0, chkDoc: 0, fdb: 0, connFdb: 0, immFdb: 0, connImmFdb: 0 };
-
-            if(filteredData.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="10" class="text-center p-6 text-slate-500">No agent data found for ${activeTeam} in this file. Please ensure column names like 'Agent Name' match.</td></tr>`;
-            } else {
-                filteredData.forEach(row => {
-                    // Extracting metrics with dynamic key fallback
-                    const gmeet = Number(row['Gmeet Video'] || row['gmeet'] || 0);
-                    const book = Number(row['Book consultation'] || row['Book Consultation'] || 0);
-                    const done = Number(row['Done consultation'] || row['Done Consultation'] || 0);
-                    const camp = Number(row['camp cases (Done-video call)'] || row['Camp Cases'] || 0);
-                    const chkDoc = Number(row['chk doc'] || row['Check Doc'] || row['chk doc'] || 0);
-                    const fdb = Number(row['fdb'] || row['FDB'] || 0);
-                    const connFdb = Number(row['connected FDB'] || row['Connected FDB'] || 0);
-                    const immFdb = Number(row['IMM FDB'] || row['imm fdb'] || 0);
-                    const connImmFdb = Number(row['CONNECTED IMM FDB'] || row['Connected IMM FDB'] || 0);
-
-                    // Accumulate Totals for Charts
-                    totals.gmeet += gmeet;
-                    totals.book += book;
-                    totals.done += done;
-                    totals.camp += camp;
-                    totals.chkDoc += chkDoc;
-                    totals.fdb += fdb;
-                    totals.connFdb += connFdb;
-                    totals.immFdb += immFdb;
-                    totals.connImmFdb += connImmFdb;
-
-                    const tr = document.createElement('tr');
-                    tr.className = "hover:bg-slate-800/40 transition";
-                    tr.innerHTML = `
-                        <td class="p-4 font-semibold text-slate-200">${row['Agent Name'] || row['Agent'] || row['Name']}</td>
-                        <td class="p-4 text-center font-mono">${gmeet}</td>
-                        <td class="p-4 text-center font-mono text-blue-400">${book}</td>
-                        <td class="p-4 text-center font-mono text-emerald-400">${done}</td>
-                        <td class="p-4 text-center font-mono">${camp}</td>
-                        <td class="p-4 text-center font-mono">${chkDoc}</td>
-                        <td class="p-4 text-center font-mono">${fdb}</td>
-                        <td class="p-4 text-center font-mono text-purple-400">${connFdb}</td>
-                        <td class="p-4 text-center font-mono">${immFdb}</td>
-                        <td class="p-4 text-center font-mono text-indigo-400">${connImmFdb}</td>
-                    `;
-                    tbody.appendChild(tr);
-                });
-            }
-
-            updateCharts(totals);
-        }
-
-        function updateCharts(totals) {
-            // Destroy existing charts if re-rendering
-            if(barChartInstance) barChartInstance.destroy();
-            if(pieChartInstance) pieChartInstance.destroy();
-
-            // Bar Chart (Consultations)
-            const ctx1 = document.getElementById('consultationChart').getContext('2d');
-            barChartInstance = new Chart(ctx1, {
-                type: 'bar',
-                data: {
-                    labels: ['Gmeet', 'Booked', 'Done', 'Camp Cases', 'Chk Doc'],
-                    datasets: [{
-                        label: 'Counts',
-                        data: [totals.gmeet, totals.book, totals.done, totals.camp, totals.chkDoc],
-                        backgroundColor: ['#6366f1', '#3b82f6', '#10b981', '#f59e0b', '#ec4899']
-                    }]
-                },
-                options: { responsive: true, plugins: { legend: { display: false } } }
-            });
-
-            // Pie Chart (FDB Breakdown)
-            const ctx2 = document.getElementById('fdbChart').getContext('2d');
-            pieChartInstance = new Chart(ctx2, {
-                type: 'doughnut',
-                data: {
-                    labels: ['FDB', 'Connected FDB', 'IMM FDB', 'Connected IMM FDB'],
-                    datasets: [{
-                        data: [totals.fdb, totals.connFdb, totals.immFdb, totals.connImmFdb],
-                        backgroundColor: ['#8b5cf6', '#a855f7', '#d946ef', '#06b6d4']
-                    }]
-                },
-                options: { responsive: true }
-            });
-        }
-    </script>
-</body>
-</html>
+# Save to Excel with sheets
+with pd.ExcelWriter('Agent_Performance_Dashboard.xlsx') as writer:
+    for team in team_mapping.keys():
+        df_final[df_final['Team'] == team].to_excel(writer, sheet_name=team.replace(' ', '_'), index=False)
