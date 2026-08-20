@@ -54,15 +54,15 @@
     /* Executive Score Card Grid */
     .summary-cards { 
       display: grid; 
-      grid-template-columns: repeat(auto-fit, minmax(135px, 1fr)); 
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); 
       gap: 14px; 
       margin-bottom: 30px; 
     }
     
-    /* Uniform Dark Style For ALL Cards (Matching Total Agents) */
+    /* Uniform Dark Style For ALL Cards */
     .card { 
       background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); 
-      padding: 16px 10px; 
+      padding: 18px 12px; 
       border-radius: 12px; 
       border: 1px solid #0f172a; 
       border-top: 5px solid #38bdf8; 
@@ -72,16 +72,18 @@
     }
     .card:hover { transform: translateY(-3px); box-shadow: 0 10px 22px rgba(15, 23, 42, 0.4); }
     
+    /* Updated Scorecard Text Styles */
     .card h3 { 
-      font-size: 11px; 
-      color: #94a3b8; 
+      font-size: 13px; 
+      color: #ffffff; 
       text-transform: uppercase; 
-      margin-bottom: 8px; 
+      margin-bottom: 10px; 
       font-weight: 800; 
-      letter-spacing: 0.6px; 
+      letter-spacing: 0.8px; 
+      line-height: 1.2;
     }
     .card p { 
-      font-size: 26px; 
+      font-size: 28px; 
       font-weight: 900; 
       color: #ffffff; 
     }
