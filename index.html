@@ -4,38 +4,51 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Agent Hourly Report</title>
-  <!-- SheetJS for Excel/CSV Parsing -->
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
-    body { background-color: #0f172a; color: #f8fafc; padding: 20px; }
-    header { text-align: center; margin-bottom: 25px; padding: 20px; background: linear-gradient(135deg, #1e293b, #0f172a); border-radius: 12px; border: 1px solid #334155; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
-    h1 { color: #38bdf8; font-size: 28px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 15px; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; -webkit-font-smoothing: antialiased; }
+    
+    body { background-color: #f8fafc; color: #0f172a; padding: 20px; }
+    
+    header { text-align: center; margin-bottom: 25px; padding: 22px; background: #ffffff; border-radius: 12px; border: 1px solid #cbd5e1; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); }
+    h1 { color: #0284c7; font-size: 28px; font-weight: 900; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 15px; }
+    
     .upload-container { display: flex; justify-content: center; align-items: center; gap: 15px; flex-wrap: wrap; }
     input[type="file"] { display: none; }
-    .custom-file-upload { background: #2563eb; color: white; padding: 10px 24px; border-radius: 8px; cursor: pointer; font-weight: 600; transition: 0.3s; box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4); }
-    .custom-file-upload:hover { background: #1d4ed8; }
-    .file-name { font-size: 14px; color: #94a3b8; }
+    .custom-file-upload { background: #0284c7; color: #ffffff; padding: 12px 26px; border-radius: 8px; cursor: pointer; font-weight: 700; transition: 0.2s; box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3); text-transform: uppercase; font-size: 13px; letter-spacing: 0.5px; }
+    .custom-file-upload:hover { background: #0369a1; }
+    .file-name { font-size: 14px; color: #475569; font-weight: 600; }
     
     /* Summary Grid for All Metrics */
-    .summary-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 30px; }
-    .card { background: #1e293b; padding: 14px 10px; border-radius: 10px; border-left: 4px solid #38bdf8; border: 1px solid #334155; text-align: center; }
-    .card h3 { font-size: 11px; color: #94a3b8; text-transform: uppercase; margin-bottom: 6px; font-weight: 600; }
-    .card p { font-size: 20px; font-weight: 800; color: #38bdf8; }
+    .summary-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; margin-bottom: 30px; }
+    .card { background: #ffffff; padding: 14px 8px; border-radius: 10px; border: 1px solid #cbd5e1; border-top: 4px solid #0284c7; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+    .card h3 { font-size: 11px; color: #475569; text-transform: uppercase; margin-bottom: 6px; font-weight: 800; letter-spacing: 0.5px; }
+    .card p { font-size: 22px; font-weight: 900; color: #0284c7; }
     
-    .team-section { background: #1e293b; border-radius: 12px; border: 1px solid #334155; margin-bottom: 30px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
-    .team-header { background: #334155; padding: 12px 20px; font-size: 18px; font-weight: 700; color: #38bdf8; letter-spacing: 0.5px; border-bottom: 2px solid #0284c7; }
+    /* Team Table Section */
+    .team-section { background: #ffffff; border-radius: 12px; border: 1px solid #cbd5e1; margin-bottom: 30px; overflow: hidden; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); }
+    .team-header { background: #e0f2fe; padding: 14px 20px; font-size: 19px; font-weight: 900; color: #0369a1; letter-spacing: 0.5px; border-bottom: 2px solid #bae6fd; text-transform: uppercase; }
     
     .table-responsive { overflow-x: auto; }
-    table { width: 100%; border-collapse: collapse; text-align: left; font-size: 13px; }
-    th { background-color: #0f172a; color: #cbd5e1; padding: 12px; font-weight: 600; border-bottom: 1px solid #334155; text-transform: uppercase; font-size: 11px; text-align: center; }
-    th:first-child { text-align: left; }
-    td { padding: 10px 12px; border-bottom: 1px solid #1e293b; color: #e2e8f0; }
-    tr:nth-child(even) { background-color: #182232; }
-    tr:hover { background-color: #26334d; }
-    .agent-name { font-weight: 600; color: #f8fafc; text-align: left; }
-    .metric-val { text-align: center; }
+    table { width: 100%; border-collapse: collapse; text-align: left; font-size: 14px; }
+    
+    /* Ultra-Sharp High Contrast Light Table Headers */
+    th { background-color: #f1f5f9; color: #0f172a; padding: 12px 10px; font-weight: 800; border-bottom: 2px solid #cbd5e1; border-right: 1px solid #e2e8f0; text-transform: uppercase; font-size: 11px; text-align: center; letter-spacing: 0.5px; }
+    th:first-child { text-align: left; padding-left: 18px; }
+    th:last-child { border-right: none; }
+    
+    /* Crisp Data Cells */
+    td { padding: 11px 10px; border-bottom: 1px solid #e2e8f0; border-right: 1px solid #f1f5f9; color: #0f172a; font-weight: 700; }
+    td:last-child { border-right: none; }
+    
+    tr:nth-child(even) { background-color: #f8fafc; }
+    tr:nth-child(odd) { background-color: #ffffff; }
+    tr:hover { background-color: #f0f9ff; }
+    
+    .agent-name { font-weight: 800; color: #0f172a; text-align: left; padding-left: 18px; font-size: 14px; }
+    .metric-val { text-align: center; font-size: 15px; color: #0f172a; }
+    .metric-zero { color: #94a3b8; font-weight: 500; } /* Soft grey for zero values */
   </style>
 </head>
 <body>
@@ -51,7 +64,6 @@
     </div>
   </header>
 
-  <!-- Top Summary Cards -->
   <div class="summary-cards" id="summaryCards">
     <div class="card"><h3>Total Agents</h3><p id="totAgents">0</p></div>
     <div class="card"><h3>Book Consultation</h3><p id="totBooked">0</p></div>
@@ -222,17 +234,19 @@
           gTotImmFdb += s.imm_fdb;
           gTotConnImmFdb += s.conn_imm_fdb;
 
+          const fmt = (val) => val === 0 ? `<span class="metric-zero">0</span>` : val;
+
           tableRows += `
             <tr>
               <td class="agent-name">${member}</td>
-              <td class="metric-val">${s.booked}</td>
-              <td class="metric-val">${s.done}</td>
-              <td class="metric-val">${s.videocall}</td>
-              <td class="metric-val">${s.chkdoc}</td>
-              <td class="metric-val">${s.fdb}</td>
-              <td class="metric-val">${s.conn_fdb}</td>
-              <td class="metric-val">${s.imm_fdb}</td>
-              <td class="metric-val">${s.conn_imm_fdb}</td>
+              <td class="metric-val">${fmt(s.booked)}</td>
+              <td class="metric-val">${fmt(s.done)}</td>
+              <td class="metric-val">${fmt(s.videocall)}</td>
+              <td class="metric-val">${fmt(s.chkdoc)}</td>
+              <td class="metric-val">${fmt(s.fdb)}</td>
+              <td class="metric-val">${fmt(s.conn_fdb)}</td>
+              <td class="metric-val">${fmt(s.imm_fdb)}</td>
+              <td class="metric-val">${fmt(s.conn_imm_fdb)}</td>
             </tr>
           `;
         });
@@ -277,7 +291,6 @@
       document.getElementById('totConnImmFdb').innerText = gTotConnImmFdb.toLocaleString();
     }
 
-    // Initial render empty dashboard
     renderDashboard({});
   </script>
 </body>
