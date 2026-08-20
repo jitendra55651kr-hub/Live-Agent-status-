@@ -71,7 +71,7 @@
       "TEAM JITENDRA": [
         "Saurav Pal", "Md anas", "Renu Gupta", "Shivam verma", 
         "Jogender singh", "Jayshree Choudhary", "Snigdha pal", 
-        "Rashi Gupta", "Kiran thakur", "Jayshree", "Kiran Singh"
+        "Rashi Gupta", "Kiran thakur"
       ],
       "TEAM DEEPTI": [
         "Renu Rani", "Pooja Rathore", "ROSHNI PRAJAPATI", "GARVIT JHA", 
@@ -81,18 +81,18 @@
       "TEAM RAVI": [
         "Jyoti Singh unit 2", "Rajendra Mourya", "Apurv Acharya", 
         "Amit Sharma", "Atul Kumar", "Sumit H", "Piyush Verma", 
-        "Shivam Shukla", "Ravi kumar"
+        "Shivam Shukla"
       ],
       "TEAM SHIVAM": [
-        "Shivam saxena", "Nandani", "Kamni Sharma", "Burhan", 
-        "Chandrabhanu", "Munsi", "Ashish Yadav", "Chandrabhanu Sukla"
+        "Nandani", "Kamni Sharma", "Burhan", 
+        "Chandrabhanu", "Munsi Sakil Ahmed", "Ashish Yadav", "Chandrabhanu Sukla"
       ],
       "TEAM ISHANT": [
         "Ayushi Saxena", "Harivansh Agarwal", "Isha Mehta", 
         "Smruti Rani Sahoo", "Sushma Chaudhary", "Ashok Pawar", 
         "PRIYA PATIDAR", "YASHWANT SINGH", "Sanjana Khuswaha", 
         "MOHD SHAKIB", "Snehal Sukhadeo Gaikwad", "Abuzar Akhtar", 
-        "Ishant", "Sushma", "Isha mehta"
+        "Sushma", "Isha mehta"
       ]
     };
 
@@ -200,7 +200,7 @@
           const cleanMem = cleanString(member);
           let stats = agentStatsMap[cleanMem];
 
-          // Flexible Matching Logic (Handles Saurabh/Saurav & Partial Names)
+          // Matching Logic (Exact & Partial/Variations Match)
           if (!stats) {
             const key = Object.keys(agentStatsMap).find(k => {
               const cleanMemAlt = cleanMem.replace('saurabh', 'saurav');
