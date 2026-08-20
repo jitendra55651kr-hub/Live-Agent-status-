@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Agent Hourly Report</title>
-  <!-- SheetJS for Excel/CSV Parsing -->
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
   <style>
@@ -19,8 +18,8 @@
     .file-name { font-size: 14px; color: #94a3b8; }
     
     /* Summary Grid for All Metrics */
-    .summary-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-bottom: 30px; }
-    .card { background: #1e293b; padding: 14px 12px; border-radius: 10px; border-left: 4px solid #38bdf8; border: 1px solid #334155; text-align: center; }
+    .summary-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 30px; }
+    .card { background: #1e293b; padding: 14px 10px; border-radius: 10px; border-left: 4px solid #38bdf8; border: 1px solid #334155; text-align: center; }
     .card h3 { font-size: 11px; color: #94a3b8; text-transform: uppercase; margin-bottom: 6px; font-weight: 600; }
     .card p { font-size: 20px; font-weight: 800; color: #38bdf8; }
     
@@ -51,18 +50,16 @@
     </div>
   </header>
 
-  <!-- Top Summary Cards for ALL Metrics -->
   <div class="summary-cards" id="summaryCards">
     <div class="card"><h3>Total Agents</h3><p id="totAgents">0</p></div>
-    <div class="card"><h3>Gmeet Video</h3><p id="totGmeet">0</p></div>
-    <div class="card"><h3>Booked</h3><p id="totBooked">0</p></div>
-    <div class="card"><h3>Done</h3><p id="totDone">0</p></div>
-    <div class="card"><h3>Camp Cases</h3><p id="totCamp">0</p></div>
+    <div class="card"><h3>Book Consultation</h3><p id="totBooked">0</p></div>
+    <div class="card"><h3>Done Consultation</h3><p id="totDone">0</p></div>
+    <div class="card"><h3>Clinic Video Call</h3><p id="totVideoCall">0</p></div>
     <div class="card"><h3>Chk Doc</h3><p id="totChkDoc">0</p></div>
     <div class="card"><h3>FDB</h3><p id="totFdb">0</p></div>
-    <div class="card"><h3>Conn FDB</h3><p id="totConnFdb">0</p></div>
+    <div class="card"><h3>Connected FDB</h3><p id="totConnFdb">0</p></div>
     <div class="card"><h3>IMM FDB</h3><p id="totImmFdb">0</p></div>
-    <div class="card"><h3>Conn IMM FDB</h3><p id="totConnImmFdb">0</p></div>
+    <div class="card"><h3>Connected IMM FDB</h3><p id="totConnImmFdb">0</p></div>
   </div>
 
   <div id="teamsContainer"></div>
@@ -72,7 +69,7 @@
       "TEAM JITENDRA": [
         "Saurabh", "Md anas", "Renu Gupta", "Shivam verma", 
         "Jogender singh", "Jayshree Choudhary", "Snigdha pal", 
-        "Rashi Gupta", "Kiran thakur", "Jayshree"
+        "Rashi Gupta", "Kiran thakur", "Jayshree", "Kiran Singh"
       ],
       "TEAM DEEPTI": [
         "Renu Rani", "Pooja Rathore", "ROSHNI PRAJAPATI", "GARVIT JHA", 
@@ -86,7 +83,7 @@
       ],
       "TEAM SHIVAM": [
         "Shivam saxena", "Nandani", "Kamni Sharma", "Burhan", 
-        "Chandrabhanu", "Munsi", "Ashish Yadav"
+        "Chandrabhanu", "Munsi", "Ashish Yadav", "Chandrabhanu Sukla"
       ],
       "TEAM ISHANT": [
         "Ayushi Saxena", "Harivansh Agarwal", "Isha Mehta", 
@@ -124,7 +121,7 @@
       let headerRowIndex = -1;
       let colMap = {};
 
-      // Scan rows to find header columns
+      // Detect header row dynamically
       for (let i = 0; i < Math.min(20, rows.length); i++) {
         const row = rows[i];
         if (!row) continue;
@@ -132,14 +129,11 @@
         row.forEach((cell, colIdx) => {
           const val = cleanString(cell);
           if (val === 'agent' || val === 'agentname' || val === 'name') colMap['agent'] = colIdx;
-          if (val.includes('gmeet')) colMap['gmeet'] = colIdx;
-          if (val === 'booked' || val.includes('book')) colMap['booked'] = colIdx;
-          // Exact & Fuzzy match for Done column
-          if (val === 'done' || val.includes('doneconsultation') || val.includes('done')) {
-            if (colMap['done'] === undefined) colMap['done'] = colIdx;
-          }
-          if (val.includes('camp') || val.includes('videocall')) colMap['camp'] = colIdx;
+          if (val.includes('booked')) colMap['booked'] = colIdx;
+          if (val.includes('done')) colMap['done'] = colIdx;
+          if (val.includes('videocall') || val.includes('clinicvideo')) colMap['videocall'] = colIdx;
           if (val.includes('chkdoc') || val.includes('checkdoc')) colMap['chkdoc'] = colIdx;
+          
           if (val === 'immfdb') colMap['imm_fdb'] = colIdx;
           else if (val.includes('connectedimmfdb') || val.includes('connimm')) colMap['conn_imm_fdb'] = colIdx;
           else if (val.includes('connectedfdb') || val.includes('connected')) colMap['conn_fdb'] = colIdx;
@@ -153,7 +147,7 @@
       }
 
       if (headerRowIndex === -1) {
-        alert("Could not find 'Agent' column in sheet.");
+        alert("Could not find 'Agent' column in the uploaded sheet.");
         return;
       }
 
@@ -174,10 +168,9 @@
 
         agentStatsMap[cleanName] = {
           displayName: rawName,
-          gmeet: getNum('gmeet'),
           booked: getNum('booked'),
           done: getNum('done'),
-          camp: getNum('camp'),
+          videocall: getNum('videocall'),
           chkdoc: getNum('chkdoc'),
           fdb: getNum('fdb'),
           conn_fdb: getNum('conn_fdb'),
@@ -193,8 +186,8 @@
       const container = document.getElementById('teamsContainer');
       container.innerHTML = '';
 
-      let gTotAgents = 0, gTotGmeet = 0, gTotBooked = 0, gTotDone = 0, 
-          gTotCamp = 0, gTotChk = 0, gTotFdb = 0, gTotConnFdb = 0, 
+      let gTotAgents = 0, gTotBooked = 0, gTotDone = 0, gTotVideoCall = 0, 
+          gTotChk = 0, gTotFdb = 0, gTotConnFdb = 0, 
           gTotImmFdb = 0, gTotConnImmFdb = 0;
 
       Object.keys(TEAMS).forEach(teamName => {
@@ -212,14 +205,13 @@
           }
 
           const s = stats || {
-            gmeet: 0, booked: 0, done: 0, camp: 0, 
+            booked: 0, done: 0, videocall: 0, 
             chkdoc: 0, fdb: 0, conn_fdb: 0, imm_fdb: 0, conn_imm_fdb: 0
           };
 
-          gTotGmeet += s.gmeet;
           gTotBooked += s.booked;
           gTotDone += s.done;
-          gTotCamp += s.camp;
+          gTotVideoCall += s.videocall;
           gTotChk += s.chkdoc;
           gTotFdb += s.fdb;
           gTotConnFdb += s.conn_fdb;
@@ -229,10 +221,9 @@
           tableRows += `
             <tr>
               <td class="agent-name">${member}</td>
-              <td class="metric-val">${s.gmeet}</td>
               <td class="metric-val">${s.booked}</td>
               <td class="metric-val">${s.done}</td>
-              <td class="metric-val">${s.camp}</td>
+              <td class="metric-val">${s.videocall}</td>
               <td class="metric-val">${s.chkdoc}</td>
               <td class="metric-val">${s.fdb}</td>
               <td class="metric-val">${s.conn_fdb}</td>
@@ -250,10 +241,9 @@
                 <thead>
                   <tr>
                     <th>Agent Name</th>
-                    <th>Gmeet Video</th>
                     <th>Book Consultation</th>
                     <th>Done Consultation</th>
-                    <th>Camp Cases (Done-Video)</th>
+                    <th>Clinic Video Call</th>
                     <th>Chk Doc</th>
                     <th>FDB</th>
                     <th>Connected FDB</th>
@@ -271,12 +261,11 @@
         container.innerHTML += teamHtml;
       });
 
-      // Update Summary Cards
+      // Update Upper Summary Cards
       document.getElementById('totAgents').innerText = gTotAgents;
-      document.getElementById('totGmeet').innerText = gTotGmeet.toLocaleString();
       document.getElementById('totBooked').innerText = gTotBooked.toLocaleString();
       document.getElementById('totDone').innerText = gTotDone.toLocaleString();
-      document.getElementById('totCamp').innerText = gTotCamp.toLocaleString();
+      document.getElementById('totVideoCall').innerText = gTotVideoCall.toLocaleString();
       document.getElementById('totChkDoc').innerText = gTotChk.toLocaleString();
       document.getElementById('totFdb').innerText = gTotFdb.toLocaleString();
       document.getElementById('totConnFdb').innerText = gTotConnFdb.toLocaleString();
