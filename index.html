@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Agent Hourly Report</title>
+  <title>Agent Hourly Report - Unit 2</title>
   <!-- SheetJS for Excel/CSV Parsing -->
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -28,8 +28,18 @@
       font-weight: 900; 
       letter-spacing: 1.5px; 
       text-transform: uppercase; 
-      margin-bottom: 16px; 
+      margin-bottom: 4px; 
       text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); 
+    }
+    
+    /* Subtitle Styling for UNIT 2 */
+    .header-subtitle {
+      color: #38bdf8;
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 18px;
     }
     
     .upload-container { display: flex; justify-content: center; align-items: center; gap: 15px; flex-wrap: wrap; }
@@ -153,6 +163,7 @@
 
   <header>
     <h1>AGENT HOURLY REPORT</h1>
+    <div class="header-subtitle">UNIT 2</div>
     <div class="upload-container">
       <label for="fileInput" class="custom-file-upload">
         📁 Upload Excel / CSV File
