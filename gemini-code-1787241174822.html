@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Agent Status Cashpore Unit 2</title>
+    <!-- Google Fonts & FontAwesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --accent: #38bdf8;
+            --text-main: #f8fafc;
+            --text-sub: #94a3b8;
+            --border: #334155;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 25px;
+            padding: 20px;
+            background: var(--card-bg);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            color: var(--accent);
+            font-size: 2rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .status-bar {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            font-size: 0.9rem;
+            color: var(--text-sub);
+        }
+
+        .live-indicator {
+            width: 10px;
+            height: 10px;
+            background-color: #22c55e;
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 0 10px #22c55e;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.95); opacity: 0.8; }
+            50% { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(0.95); opacity: 0.8; }
+        }
+
+        .team-container {
+            margin-bottom: 30px;
+            background: var(--card-bg);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .team-header {
+            background: #2563eb;
+            color: #fff;
+            padding: 12px 20px;
+            font-size: 1.25rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th, td {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            background-color: #111827;
+            color: var(--accent);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        tr:hover {
+            background-color: rgba(56, 189, 248, 0.05);
+        }
+
+        .agent-name {
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .metric-badge {
+            font-weight: 600;
+            padding: 4px 8px;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.05);
+            display: inline-block;
+            min-width: 40px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>LIVE AGENT STATUS CASHPORE UNIT 2</h1>
+        <div class="status-bar">
+            <span><span class="live-indicator"></span> LIVE CONNECTED TO DBR</span>
+            <span>|</span>
+            <span id="last-updated">Last Updated: Syncing...</span>
+        </div>
+    </header>
+
+    <div id="dashboard-content">
+        <!-- Teams Data Rendered Dynamically -->
+    </div>
+
+    <script>
+        // Teams & Agents Configuration
+        const teamsData = [
+            {
+                name: "Team Jitendra",
+                agents: [
+                    "Saurabh", "Md anas", "Renu Gupta", "Shivam verma", 
+                    "Jogender singh", "Jayshree Choudhary", "Snigdha pal", 
+                    "Rashi Gupta", "Kiran thakur"
+                ]
+            },
+            {
+                name: "Team Deepti",
+                agents: [
+                    "Renu Rani", "Pooja Rathore", "ROSHNI PRAJAPATI", "GARVIT JHA", 
+                    "Rajni Saini", "Puja Chauhan", "Shivansh tiwari", "Saifur Janam", 
+                    "Anjali Gupta", "Roshni chouhan"
+                ]
+            },
+            {
+                name: "Team Ravi",
+                agents: [
+                    "Jyoti Singh unit 2", "Rajendra Mourya", "Apurv Acharya", 
+                    "Amit Sharma", "Atul Kumar", "Sumit H", "Piyush Verma", "Shivam Shukla"
+                ]
+            },
+            {
+                name: "Team Shivam Saxena",
+                agents: [
+                    "Nandani", "Kamni Sharma", "Burhan", "Chandrabhanu", 
+                    "Munsi", "Ashish Yadav"
+                ]
+            },
+            {
+                name: "Team Ishant",
+                agents: [
+                    "Ayushi Saxena", "Harivansh Agarwal", "Isha Mehta", "Smruti­rani Sahoo", 
+                    "Sushma Chaudhary", "Ashok Pawar", "PRIYA PATIDAR", "YASHWANT SINGH", 
+                    "Sanjana Khuswaha", "MOHD SHAKIB", "Snehal Sukhadeo Gaikwad", "Abuzar Akhtar"
+                ]
+            }
+        ];
+
+        // Render Dashboard Tables
+        function renderDashboard() {
+            const container = document.getElementById('dashboard-content');
+            container.innerHTML = '';
+
+            teamsData.forEach(team => {
+                let html = `
+                    <div class="team-container">
+                        <div class="team-header">
+                            <i class="fa-solid fa-users"></i> ${team.name}
+                        </div>
+                        <div class="table-responsive">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Agent Name</th>
+                                        <th>GMeet Video</th>
+                                        <th>Done Consultation</th>
+                                        <th>Camp Cases</th>
+                                        <th>FDB</th>
+                                        <th>Connected FDB</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                `;
+
+                team.agents.forEach(agent => {
+                    html += `
+                        <tr>
+                            <td class="agent-name">${agent}</td>
+                            <td><span class="metric-badge" id="${sanitize(agent)}-gmeet">0</span></td>
+                            <td><span class="metric-badge" id="${sanitize(agent)}-consultation">0</span></td>
+                            <td><span class="metric-badge" id="${sanitize(agent)}-camp">0</span></td>
+                            <td><span class="metric-badge" id="${sanitize(agent)}-fdb">0</span></td>
+                            <td><span class="metric-badge" id="${sanitize(agent)}-conn-fdb">0</span></td>
+                        </tr>
+                    `;
+                });
+
+                html += `
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += html;
+            });
+        }
+
+        function sanitize(str) {
+            return str.replace(/[^a-zA-Z0-9]/g, "_").toLowerCase();
+        }
+
+        // Live Data Syncing Placeholder Function
+        function fetchDBRData() {
+            // Yahan backend API endpoint ka call aayega jo DBR link se scraped data provide karega
+            document.getElementById('last-updated').innerText = "Last Updated: " + new Date().toLocaleTimeString();
+        }
+
+        // Initial Load & Auto Refresh Every 10 Seconds
+        renderDashboard();
+        fetchDBRData();
+        setInterval(fetchDBRData, 10000);
+    </script>
+</body>
+</html>
