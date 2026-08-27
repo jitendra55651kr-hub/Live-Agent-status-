@@ -316,7 +316,8 @@
         const members = TEAMS[teamName];
         let tableRows = '';
 
-        members.forEach(member => {
+        // Prepare member data list for sorting
+        let teamData = members.map(member => {
           gTotAgents++;
           const cleanMem = cleanString(member);
           let stats = agentStatsMap[cleanMem];
@@ -334,6 +335,19 @@
             booked: 0, done: 0, videocall: 0, 
             chkdoc: 0, fdb: 0, conn_fdb: 0, imm_fdb: 0, conn_imm_fdb: 0
           };
+
+          return {
+            name: member,
+            stats: s
+          };
+        });
+
+        // Sort agents in Descending Order based on Book Consultation
+        teamData.sort((a, b) => b.stats.booked - a.stats.booked);
+
+        teamData.forEach(item => {
+          const member = item.name;
+          const s = item.stats;
 
           gTotBooked += s.booked;
           gTotDone += s.done;
