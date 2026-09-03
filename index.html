@@ -156,7 +156,6 @@
     
     .agent-name { font-weight: 800; color: #0f172a; text-align: left; padding-left: 20px; font-size: 16px; }
     .metric-val { text-align: center; font-size: 17px; color: #0f172a; font-weight: 900; }
-    .metric-zero { color: #64748b; font-weight: 700; }
   </style>
 </head>
 <body>
@@ -316,7 +315,6 @@
         const members = TEAMS[teamName];
         let tableRows = '';
 
-        // Prepare member data list for sorting
         let teamData = members.map(member => {
           gTotAgents++;
           const cleanMem = cleanString(member);
@@ -342,7 +340,7 @@
           };
         });
 
-        // Sort agents in Descending Order based on Book Consultation
+        // Descending order sort by Book Consultation
         teamData.sort((a, b) => b.stats.booked - a.stats.booked);
 
         teamData.forEach(item => {
@@ -358,7 +356,8 @@
           gTotImmFdb += s.imm_fdb;
           gTotConnImmFdb += s.conn_imm_fdb;
 
-          const fmt = (val) => val === 0 ? `<span class="metric-zero">0</span>` : val;
+          // 0 hone par blank ('') return karega
+          const fmt = (val) => (!val || val === 0) ? '' : val;
 
           tableRows += `
             <tr>
@@ -403,7 +402,7 @@
         container.innerHTML += teamHtml;
       });
 
-      // Update Upper Summary Cards
+      // Update Upper Summary Cards (cards me totals show honge)
       document.getElementById('totAgents').innerText = gTotAgents;
       document.getElementById('totBooked').innerText = gTotBooked.toLocaleString();
       document.getElementById('totDone').innerText = gTotDone.toLocaleString();
