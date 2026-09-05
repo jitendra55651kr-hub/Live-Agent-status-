@@ -60,24 +60,6 @@
     .custom-file-upload:hover { background: #1d4ed8; transform: translateY(-1px); }
     .file-name { font-size: 14px; color: #cbd5e1; font-weight: 600; }
 
-    .header-filter-btn {
-      background: #0369a1;
-      color: #ffffff;
-      border: 1px solid #38bdf8;
-      padding: 12px 22px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: 800;
-      font-size: 13px;
-      letter-spacing: 0.8px;
-      text-transform: uppercase;
-      transition: all 0.2s ease;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .header-filter-btn:hover { background: #0284c7; transform: translateY(-1px); }
-
     /* Summary Cards */
     .summary-cards { 
       display: grid; 
@@ -182,24 +164,27 @@
       box-shadow: 0 0 6px rgba(56, 189, 248, 0.4);
     }
 
-    /* In-Table Agent Filter Trigger Button */
+    /* In-Table Team Filter Button */
     .agent-filter-pill {
       display: inline-flex;
       align-items: center;
       gap: 4px;
       background: #1e293b;
       color: #38bdf8;
-      border: 1px solid #38bdf8;
-      padding: 3px 8px;
-      border-radius: 4px;
+      border: 1.5px solid #38bdf8;
+      padding: 4px 10px;
+      border-radius: 6px;
       font-size: 11px;
+      font-weight: 800;
       cursor: pointer;
-      margin-left: 6px;
-      transition: all 0.15s ease;
+      margin-left: 8px;
+      letter-spacing: 0.5px;
+      transition: all 0.2s ease;
     }
     .agent-filter-pill:hover {
       background: #38bdf8;
       color: #0f172a;
+      transform: translateY(-1px);
     }
     
     td { 
@@ -220,7 +205,7 @@
     .agent-name { font-weight: 800; color: #0f172a; text-align: left; padding-left: 16px; font-size: 16px; }
     .metric-val { text-align: center; font-size: 17px; color: #0f172a; font-weight: 900; }
 
-    /* Filter Modal */
+    /* Team Filter Modal */
     .filter-modal-overlay {
       display: none;
       position: fixed;
@@ -237,9 +222,9 @@
     .filter-modal-card {
       background: #ffffff;
       border-radius: 14px;
-      max-width: 650px;
+      max-width: 550px;
       width: 100%;
-      max-height: 85vh;
+      max-height: 80vh;
       display: flex;
       flex-direction: column;
       box-shadow: 0 20px 40px rgba(15, 23, 42, 0.35);
@@ -250,12 +235,12 @@
     .filter-modal-header {
       background: #0f172a;
       color: #ffffff;
-      padding: 18px 22px;
+      padding: 16px 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
-    .filter-modal-header h2 { font-size: 18px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; }
+    .filter-modal-header h2 { font-size: 17px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; }
     .close-modal-btn {
       background: none;
       border: none;
@@ -267,11 +252,11 @@
     .close-modal-btn:hover { color: #ffffff; }
 
     .filter-modal-tools {
-      padding: 14px 20px;
+      padding: 12px 18px;
       background: #f8fafc;
       border-bottom: 1px solid #cbd5e1;
       display: flex;
-      gap: 12px;
+      gap: 10px;
       flex-wrap: wrap;
       align-items: center;
     }
@@ -289,7 +274,7 @@
     .quick-action-btn {
       background: #ffffff;
       border: 1.5px solid #cbd5e1;
-      padding: 7px 14px;
+      padding: 7px 12px;
       border-radius: 6px;
       font-size: 12px;
       font-weight: 700;
@@ -299,30 +284,30 @@
     .quick-action-btn:hover { background: #e2e8f0; color: #0f172a; }
 
     .filter-list-body {
-      padding: 15px 20px;
+      padding: 15px 18px;
       overflow-y: auto;
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-      gap: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
     }
     .agent-checkbox-label {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
       font-size: 14px;
       font-weight: 700;
       color: #1e293b;
       cursor: pointer;
-      padding: 8px 10px;
+      padding: 9px 12px;
       background: #f1f5f9;
       border-radius: 6px;
       transition: background 0.15s ease;
     }
     .agent-checkbox-label:hover { background: #e2e8f0; }
-    .agent-checkbox-label input { width: 17px; height: 17px; accent-color: #2563eb; cursor: pointer; }
+    .agent-checkbox-label input { width: 18px; height: 18px; accent-color: #2563eb; cursor: pointer; }
 
     .filter-modal-footer {
-      padding: 14px 20px;
+      padding: 14px 18px;
       background: #f8fafc;
       border-top: 1px solid #cbd5e1;
       display: flex;
@@ -353,11 +338,6 @@
         📁 Upload Excel / CSV File
       </label>
       <input type="file" id="fileInput" accept=".csv, .xlsx, .xls">
-      
-      <button class="header-filter-btn" onclick="openAgentFilterModal()">
-        ⚡ Filter Agents (<span id="activeAgentCountDisplay">All</span>)
-      </button>
-
       <span class="file-name" id="fileName">No file chosen</span>
     </div>
   </header>
@@ -377,21 +357,21 @@
 
   <div id="teamsContainer"></div>
 
-  <!-- Filter Modal -->
+  <!-- Team Filter Modal -->
   <div class="filter-modal-overlay" id="filterModalOverlay">
     <div class="filter-modal-card">
       <div class="filter-modal-header">
-        <h2>Select Visible Agents</h2>
-        <button class="close-modal-btn" onclick="closeAgentFilterModal()">&times;</button>
+        <h2 id="modalTeamTitle">Filter Team Agents</h2>
+        <button class="close-modal-btn" onclick="closeTeamFilterModal()">&times;</button>
       </div>
       <div class="filter-modal-tools">
-        <input type="text" class="filter-search-box" id="agentSearchBox" placeholder="Search agent name..." oninput="searchFilterAgents()">
-        <button class="quick-action-btn" onclick="toggleAllAgents(true)">Select All</button>
-        <button class="quick-action-btn" onclick="toggleAllAgents(false)">Unselect All</button>
+        <input type="text" class="filter-search-box" id="teamAgentSearchBox" placeholder="Search agent name..." oninput="searchTeamAgents()">
+        <button class="quick-action-btn" onclick="toggleTeamAll(true)">Select All</button>
+        <button class="quick-action-btn" onclick="toggleTeamAll(false)">Unselect All</button>
       </div>
-      <div class="filter-list-body" id="filterListBody"></div>
+      <div class="filter-list-body" id="teamFilterListBody"></div>
       <div class="filter-modal-footer">
-        <button class="apply-btn" onclick="applyAgentFilter()">Apply & Close</button>
+        <button class="apply-btn" onclick="applyTeamFilter()">Apply & Close</button>
       </div>
     </div>
   </div>
@@ -438,8 +418,13 @@
 
     let currentAgentStatsMap = {};
     let excludedAgents = new Set();
-    let currentSortKey = 'imm_fdb'; 
-    let currentSortOrder = 'desc'; // 'desc' or 'asc'
+    let currentActiveTeamForFilter = null;
+
+    // Independent per-team sort tracking
+    const teamSortState = {};
+    Object.keys(TEAMS).forEach(team => {
+      teamSortState[team] = { key: 'imm_fdb', order: 'desc' };
+    });
 
     document.getElementById('fileInput').addEventListener('change', handleFile);
 
@@ -528,12 +513,14 @@
       renderDashboard();
     }
 
-    function handleSortClick(key) {
-      if (currentSortKey === key) {
-        currentSortOrder = (currentSortOrder === 'desc') ? 'asc' : 'desc';
+    // Sort Handler for ONLY the specific clicked team
+    function handleTeamSort(teamName, key) {
+      const state = teamSortState[teamName];
+      if (state.key === key) {
+        state.order = (state.order === 'desc') ? 'asc' : 'desc';
       } else {
-        currentSortKey = key;
-        currentSortOrder = (key === 'agent') ? 'asc' : 'desc';
+        state.key = key;
+        state.order = (key === 'agent') ? 'asc' : 'desc';
       }
       renderDashboard();
     }
@@ -546,13 +533,17 @@
           gTotChk = 0, gTotFdb = 0, gTotConnFdb = 0, 
           gTotImmFdb = 0, gTotConnImmFdb = 0;
 
-      const renderHeaders = () => {
-        return SORTABLE_COLUMNS.map(col => {
-          const isActive = currentSortKey === col.key;
-          const icon = isActive ? (currentSortOrder === 'desc' ? '▼ HIGH' : '▲ LOW') : '⇅';
+      Object.keys(TEAMS).forEach(teamName => {
+        const members = TEAMS[teamName];
+        const currentSort = teamSortState[teamName];
+
+        // Column Headers for this specific team
+        const headersHtml = SORTABLE_COLUMNS.map(col => {
+          const isActive = currentSort.key === col.key;
+          const icon = isActive ? (currentSort.order === 'desc' ? '▼ HIGH' : '▲ LOW') : '⇅';
           const activeClass = isActive ? 'sortable-th active-sort' : 'sortable-th';
           return `
-            <th class="${activeClass}" onclick="handleSortClick('${col.key}')">
+            <th class="${activeClass}" onclick="handleTeamSort('${teamName}', '${col.key}')">
               <div class="th-content">
                 <span>${col.label}</span>
                 <span class="sort-icon">${icon}</span>
@@ -560,15 +551,11 @@
             </th>
           `;
         }).join('');
-      };
 
-      const isAgentActive = currentSortKey === 'agent';
-      const agentSortIcon = isAgentActive ? (currentSortOrder === 'asc' ? '▲ A-Z' : '▼ Z-A') : '⇅';
+        const isAgentSort = currentSort.key === 'agent';
+        const agentIcon = isAgentSort ? (currentSort.order === 'asc' ? '▲ A-Z' : '▼ Z-A') : '⇅';
 
-      Object.keys(TEAMS).forEach(teamName => {
-        const members = TEAMS[teamName];
-        let tableRows = '';
-
+        // Filter out excluded agents for this team
         const visibleMembers = members.filter(m => !excludedAgents.has(m));
 
         let teamData = visibleMembers.map(member => {
@@ -593,27 +580,25 @@
           return { name: member, stats: s };
         });
 
-        // Smart Sorting: Blanks & 0s Always Stay At The Bottom
+        // Independent Sorting: 0/Blank values always at the bottom
         teamData.sort((a, b) => {
-          if (currentSortKey === 'agent') {
-            return currentSortOrder === 'asc' 
+          if (currentSort.key === 'agent') {
+            return currentSort.order === 'asc' 
               ? a.name.localeCompare(b.name) 
               : b.name.localeCompare(a.name);
           }
 
-          const valA = Number(a.stats[currentSortKey]) || 0;
-          const valB = Number(b.stats[currentSortKey]) || 0;
+          const valA = Number(a.stats[currentSort.key]) || 0;
+          const valB = Number(b.stats[currentSort.key]) || 0;
 
-          // Dono zero/blank hain toh alphabetical
           if (valA === 0 && valB === 0) return a.name.localeCompare(b.name);
-          // Zero/Blank hamesha bottom me bhejo
           if (valA === 0) return 1;
           if (valB === 0) return -1;
 
-          // Actual values par sorting
-          return currentSortOrder === 'desc' ? (valB - valA) : (valA - valB);
+          return currentSort.order === 'desc' ? (valB - valA) : (valA - valB);
         });
 
+        let tableRows = '';
         teamData.forEach(item => {
           const member = item.name;
           const s = item.stats;
@@ -646,19 +631,19 @@
 
         const teamHtml = `
           <div class="team-section">
-            <div class="team-header">${teamName} (${teamData.length})</div>
+            <div class="team-header">${teamName} (${teamData.length}/${members.length})</div>
             <div class="table-responsive">
               <table>
                 <thead>
                   <tr>
-                    <th class="${isAgentActive ? 'sortable-th active-sort' : 'sortable-th'}">
+                    <th class="${isAgentSort ? 'sortable-th active-sort' : 'sortable-th'}">
                       <div class="th-content" style="justify-content: flex-start;">
-                        <span onclick="handleSortClick('agent')">Agent Name</span>
-                        <span class="sort-icon" onclick="handleSortClick('agent')">${agentSortIcon}</span>
-                        <button type="button" class="agent-filter-pill" onclick="openAgentFilterModal()">⚡ Filter</button>
+                        <span onclick="handleTeamSort('${teamName}', 'agent')">Agent Name</span>
+                        <span class="sort-icon" onclick="handleTeamSort('${teamName}', 'agent')">${agentIcon}</span>
+                        <button type="button" class="agent-filter-pill" onclick="openTeamFilterModal('${teamName}')">⚡ Filter</button>
                       </div>
                     </th>
-                    ${renderHeaders()}
+                    ${headersHtml}
                   </tr>
                 </thead>
                 <tbody>
@@ -681,48 +666,53 @@
       document.getElementById('totConnFdb').innerText = gTotConnFdb.toLocaleString();
       document.getElementById('totImmFdb').innerText = gTotImmFdb.toLocaleString();
       document.getElementById('totConnImmFdb').innerText = gTotConnImmFdb.toLocaleString();
-
-      const totalConfiguredAgents = Object.values(TEAMS).flat().length;
-      document.getElementById('activeAgentCountDisplay').innerText = `${totalConfiguredAgents - excludedAgents.size}/${totalConfiguredAgents}`;
     }
 
-    // Filter Modal Handling
-    function openAgentFilterModal() {
-      const container = document.getElementById('filterListBody');
+    // Modal Operations (Strictly for the clicked Team only)
+    function openTeamFilterModal(teamName) {
+      currentActiveTeamForFilter = teamName;
+      document.getElementById('modalTeamTitle').innerText = `Filter Agents - ${teamName}`;
+      const container = document.getElementById('teamFilterListBody');
       container.innerHTML = '';
 
-      Object.keys(TEAMS).forEach(team => {
-        TEAMS[team].forEach(agent => {
-          const isChecked = !excludedAgents.has(agent) ? 'checked' : '';
-          container.innerHTML += `
-            <label class="agent-checkbox-label" data-name="${agent.toLowerCase()}">
-              <input type="checkbox" class="agent-checkbox" value="${agent}" ${isChecked}>
-              <span>${agent} <small style="color:#64748b;">(${team})</small></span>
-            </label>
-          `;
-        });
+      const members = TEAMS[teamName] || [];
+      members.forEach(agent => {
+        const isChecked = !excludedAgents.has(agent) ? 'checked' : '';
+        container.innerHTML += `
+          <label class="agent-checkbox-label" data-name="${agent.toLowerCase()}">
+            <input type="checkbox" class="team-agent-checkbox" value="${agent}" ${isChecked}>
+            <span>${agent}</span>
+          </label>
+        `;
       });
 
-      document.getElementById('agentSearchBox').value = '';
+      document.getElementById('teamAgentSearchBox').value = '';
       document.getElementById('filterModalOverlay').classList.add('open');
     }
 
-    function closeAgentFilterModal() {
+    function closeTeamFilterModal() {
       document.getElementById('filterModalOverlay').classList.remove('open');
+      currentActiveTeamForFilter = null;
     }
 
-    function applyAgentFilter() {
-      const checkboxes = document.querySelectorAll('.agent-checkbox');
-      excludedAgents.clear();
+    function applyTeamFilter() {
+      if (!currentActiveTeamForFilter) return;
+      const checkboxes = document.querySelectorAll('.team-agent-checkbox');
+      
       checkboxes.forEach(cb => {
-        if (!cb.checked) excludedAgents.add(cb.value);
+        if (!cb.checked) {
+          excludedAgents.add(cb.value);
+        } else {
+          excludedAgents.delete(cb.value);
+        }
       });
-      closeAgentFilterModal();
+
+      closeTeamFilterModal();
       renderDashboard();
     }
 
-    function toggleAllAgents(selectAll) {
-      const checkboxes = document.querySelectorAll('.agent-checkbox');
+    function toggleTeamAll(selectAll) {
+      const checkboxes = document.querySelectorAll('.team-agent-checkbox');
       checkboxes.forEach(cb => {
         const label = cb.closest('label');
         if (label.style.display !== 'none') {
@@ -731,8 +721,8 @@
       });
     }
 
-    function searchFilterAgents() {
-      const q = document.getElementById('agentSearchBox').value.toLowerCase().trim();
+    function searchTeamAgents() {
+      const q = document.getElementById('teamAgentSearchBox').value.toLowerCase().trim();
       const labels = document.querySelectorAll('.agent-checkbox-label');
       labels.forEach(lbl => {
         const name = lbl.getAttribute('data-name');
