@@ -213,7 +213,7 @@
       box-shadow: 0 0 6px rgba(56, 189, 248, 0.4);
     }
 
-    /* Highly Styled Filter Button inside Table Header */
+    /* Team Filter Button */
     .agent-filter-btn {
       display: inline-flex;
       align-items: center;
@@ -226,7 +226,6 @@
       font-size: 11px;
       font-weight: 900;
       cursor: pointer;
-      margin-left: 8px;
       letter-spacing: 0.8px;
       text-transform: uppercase;
       box-shadow: 0 2px 8px rgba(2, 132, 199, 0.35);
@@ -257,7 +256,7 @@
     .agent-name { font-weight: 800; color: #0f172a; text-align: left; padding-left: 16px; font-size: 16px; }
     .metric-val { text-align: center; font-size: 17px; color: #0f172a; font-weight: 900; }
 
-    /* Ultra-Modern Dark Modal Styling */
+    /* Dark Modal Styling */
     .filter-modal-overlay {
       display: none;
       position: fixed;
@@ -569,11 +568,14 @@
     let excludedAgents = new Set();
     let currentActiveTeamForFilter = null;
 
-    // Independent team sort tracker
+    // Default sorting state: booked High-to-Low for all teams
     const teamSortState = {};
-    Object.keys(TEAMS).forEach(team => {
-      teamSortState[team] = { key: 'imm_fdb', order: 'desc' };
-    });
+    function resetAllTeamSorts() {
+      Object.keys(TEAMS).forEach(team => {
+        teamSortState[team] = { key: 'booked', order: 'desc' };
+      });
+    }
+    resetAllTeamSorts();
 
     document.getElementById('fileInput').addEventListener('change', handleFile);
 
@@ -662,10 +664,12 @@
         };
       }
 
+      // Automatically reset every team's sort to 'Book Consultation' High-to-Low on upload
+      resetAllTeamSorts();
       renderDashboard();
     }
 
-    // Sort ONLY for the team clicked
+    // Sort ONLY for the clicked team
     function handleTeamSort(teamName, key) {
       const state = teamSortState[teamName];
       if (state.key === key) {
@@ -706,7 +710,6 @@
         const isAgentSort = currentSort.key === 'agent';
         const agentIcon = isAgentSort ? (currentSort.order === 'asc' ? '▲ A-Z' : '▼ Z-A') : '⇅';
 
-        // Filter out excluded agents
         const visibleMembers = members.filter(m => !excludedAgents.has(m));
 
         let teamData = visibleMembers.map(member => {
@@ -832,7 +835,6 @@
       const container = document.getElementById('teamFilterListBody');
       container.innerHTML = '';
 
-      // ONLY load this team's members
       const members = TEAMS[teamName] || [];
       members.forEach(agent => {
         const isChecked = !excludedAgents.has(agent) ? 'checked' : '';
