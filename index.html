@@ -12,7 +12,7 @@
     
     body { background-color: #f1f5f9; color: #0f172a; padding: 20px; }
     
-    /* Main Top Header Styling */
+    /* Main Top Header */
     header { 
       text-align: center; 
       margin-bottom: 25px; 
@@ -60,29 +60,23 @@
     .custom-file-upload:hover { background: #1d4ed8; transform: translateY(-1px); }
     .file-name { font-size: 14px; color: #cbd5e1; font-weight: 600; }
 
-    /* Filter Trigger Button */
-    .filter-btn-trigger {
-      background: #0f172a;
-      color: #38bdf8;
-      border: 1.5px solid #38bdf8;
-      padding: 12px 24px;
+    .header-filter-btn {
+      background: #0369a1;
+      color: #ffffff;
+      border: 1px solid #38bdf8;
+      padding: 12px 22px;
       border-radius: 8px;
       cursor: pointer;
       font-weight: 800;
-      font-size: 14px;
+      font-size: 13px;
       letter-spacing: 0.8px;
       text-transform: uppercase;
       transition: all 0.2s ease;
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.3);
+      gap: 6px;
     }
-    .filter-btn-trigger:hover {
-      background: #38bdf8;
-      color: #0f172a;
-      transform: translateY(-1px);
-    }
+    .header-filter-btn:hover { background: #0284c7; transform: translateY(-1px); }
 
     /* Summary Cards */
     .summary-cards { 
@@ -146,7 +140,7 @@
     th { 
       background-color: #0f172a; 
       color: #ffffff; 
-      padding: 14px 10px; 
+      padding: 12px 10px; 
       font-weight: 900; 
       border-bottom: 3px solid #334155; 
       border-right: 2.5px solid #334155; 
@@ -156,10 +150,9 @@
       letter-spacing: 0.6px; 
       user-select: none;
     }
-    th:first-child { text-align: left; padding-left: 20px; }
+    th:first-child { text-align: left; padding-left: 16px; }
     th:last-child { border-right: none; }
     
-    /* Sort Button inside TH */
     .sortable-th {
       cursor: pointer;
       transition: background 0.2s ease;
@@ -181,13 +174,32 @@
       border: 1px solid #475569;
       border-radius: 4px;
       color: #94a3b8;
-      transition: all 0.2s ease;
     }
     .sortable-th.active-sort .sort-icon {
       background: #0284c7;
       color: #ffffff;
       border-color: #38bdf8;
-      box-shadow: 0 0 8px rgba(56, 189, 248, 0.4);
+      box-shadow: 0 0 6px rgba(56, 189, 248, 0.4);
+    }
+
+    /* In-Table Agent Filter Trigger Button */
+    .agent-filter-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: #1e293b;
+      color: #38bdf8;
+      border: 1px solid #38bdf8;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      cursor: pointer;
+      margin-left: 6px;
+      transition: all 0.15s ease;
+    }
+    .agent-filter-pill:hover {
+      background: #38bdf8;
+      color: #0f172a;
     }
     
     td { 
@@ -205,17 +217,17 @@
     tr:nth-child(odd) { background-color: #ffffff; }
     tr:hover { background-color: #e0f2fe; }
     
-    .agent-name { font-weight: 800; color: #0f172a; text-align: left; padding-left: 20px; font-size: 16px; }
+    .agent-name { font-weight: 800; color: #0f172a; text-align: left; padding-left: 16px; font-size: 16px; }
     .metric-val { text-align: center; font-size: 17px; color: #0f172a; font-weight: 900; }
 
-    /* Modal / Drawer for Agent Filter */
+    /* Filter Modal */
     .filter-modal-overlay {
       display: none;
       position: fixed;
       inset: 0;
       background: rgba(15, 23, 42, 0.7);
       backdrop-filter: blur(4px);
-      z-index: 999;
+      z-index: 9999;
       justify-content: center;
       align-items: center;
       padding: 15px;
@@ -248,7 +260,7 @@
       background: none;
       border: none;
       color: #94a3b8;
-      font-size: 24px;
+      font-size: 26px;
       cursor: pointer;
       line-height: 1;
     }
@@ -342,15 +354,15 @@
       </label>
       <input type="file" id="fileInput" accept=".csv, .xlsx, .xls">
       
-      <button class="filter-btn-trigger" onclick="openAgentFilterModal()">
-        ⚙️ Filter Agents (<span id="activeAgentCountDisplay">All</span>)
+      <button class="header-filter-btn" onclick="openAgentFilterModal()">
+        ⚡ Filter Agents (<span id="activeAgentCountDisplay">All</span>)
       </button>
 
       <span class="file-name" id="fileName">No file chosen</span>
     </div>
   </header>
 
-  <!-- Top Summary Cards -->
+  <!-- Summary Cards -->
   <div class="summary-cards" id="summaryCards">
     <div class="card"><h3>Total Agents</h3><p id="totAgents">0</p></div>
     <div class="card"><h3>Book Consultation</h3><p id="totBooked">0</p></div>
@@ -365,11 +377,11 @@
 
   <div id="teamsContainer"></div>
 
-  <!-- Agent Filter Modal -->
+  <!-- Filter Modal -->
   <div class="filter-modal-overlay" id="filterModalOverlay">
     <div class="filter-modal-card">
       <div class="filter-modal-header">
-        <h2>Filter Visible Agents</h2>
+        <h2>Select Visible Agents</h2>
         <button class="close-modal-btn" onclick="closeAgentFilterModal()">&times;</button>
       </div>
       <div class="filter-modal-tools">
@@ -424,11 +436,10 @@
       { key: 'conn_imm_fdb', label: 'Connected IMM FDB' }
     ];
 
-    // Global States
     let currentAgentStatsMap = {};
     let excludedAgents = new Set();
-    let currentSortKey = 'imm_fdb'; // Default sort Imm FDB
-    let currentSortOrder = 'desc';   // 'desc' (high to low) or 'asc' (low to high)
+    let currentSortKey = 'imm_fdb'; 
+    let currentSortOrder = 'desc'; // 'desc' or 'asc'
 
     document.getElementById('fileInput').addEventListener('change', handleFile);
 
@@ -517,13 +528,12 @@
       renderDashboard();
     }
 
-    // Toggle Sorting Mode On Click
     function handleSortClick(key) {
       if (currentSortKey === key) {
         currentSortOrder = (currentSortOrder === 'desc') ? 'asc' : 'desc';
       } else {
         currentSortKey = key;
-        currentSortOrder = 'desc';
+        currentSortOrder = (key === 'agent') ? 'asc' : 'desc';
       }
       renderDashboard();
     }
@@ -536,11 +546,10 @@
           gTotChk = 0, gTotFdb = 0, gTotConnFdb = 0, 
           gTotImmFdb = 0, gTotConnImmFdb = 0;
 
-      // Render Table Headers With Sort Indicators
       const renderHeaders = () => {
         return SORTABLE_COLUMNS.map(col => {
           const isActive = currentSortKey === col.key;
-          const icon = isActive ? (currentSortOrder === 'desc' ? '▼ High' : '▲ Low') : '⇅';
+          const icon = isActive ? (currentSortOrder === 'desc' ? '▼ HIGH' : '▲ LOW') : '⇅';
           const activeClass = isActive ? 'sortable-th active-sort' : 'sortable-th';
           return `
             <th class="${activeClass}" onclick="handleSortClick('${col.key}')">
@@ -553,11 +562,13 @@
         }).join('');
       };
 
+      const isAgentActive = currentSortKey === 'agent';
+      const agentSortIcon = isAgentActive ? (currentSortOrder === 'asc' ? '▲ A-Z' : '▼ Z-A') : '⇅';
+
       Object.keys(TEAMS).forEach(teamName => {
         const members = TEAMS[teamName];
         let tableRows = '';
 
-        // Filter out excluded agents
         const visibleMembers = members.filter(m => !excludedAgents.has(m));
 
         let teamData = visibleMembers.map(member => {
@@ -582,10 +593,24 @@
           return { name: member, stats: s };
         });
 
-        // Dynamic Sorting logic
+        // Smart Sorting: Blanks & 0s Always Stay At The Bottom
         teamData.sort((a, b) => {
-          const valA = a.stats[currentSortKey] || 0;
-          const valB = b.stats[currentSortKey] || 0;
+          if (currentSortKey === 'agent') {
+            return currentSortOrder === 'asc' 
+              ? a.name.localeCompare(b.name) 
+              : b.name.localeCompare(a.name);
+          }
+
+          const valA = Number(a.stats[currentSortKey]) || 0;
+          const valB = Number(b.stats[currentSortKey]) || 0;
+
+          // Dono zero/blank hain toh alphabetical
+          if (valA === 0 && valB === 0) return a.name.localeCompare(b.name);
+          // Zero/Blank hamesha bottom me bhejo
+          if (valA === 0) return 1;
+          if (valB === 0) return -1;
+
+          // Actual values par sorting
           return currentSortOrder === 'desc' ? (valB - valA) : (valA - valB);
         });
 
@@ -626,7 +651,13 @@
               <table>
                 <thead>
                   <tr>
-                    <th>Agent Name</th>
+                    <th class="${isAgentActive ? 'sortable-th active-sort' : 'sortable-th'}">
+                      <div class="th-content" style="justify-content: flex-start;">
+                        <span onclick="handleSortClick('agent')">Agent Name</span>
+                        <span class="sort-icon" onclick="handleSortClick('agent')">${agentSortIcon}</span>
+                        <button type="button" class="agent-filter-pill" onclick="openAgentFilterModal()">⚡ Filter</button>
+                      </div>
+                    </th>
                     ${renderHeaders()}
                   </tr>
                 </thead>
@@ -640,7 +671,7 @@
         container.innerHTML += teamHtml;
       });
 
-      // Update Upper Summary Cards
+      // Update Summary Cards
       document.getElementById('totAgents').innerText = gTotAgents;
       document.getElementById('totBooked').innerText = gTotBooked.toLocaleString();
       document.getElementById('totDone').innerText = gTotDone.toLocaleString();
@@ -651,12 +682,11 @@
       document.getElementById('totImmFdb').innerText = gTotImmFdb.toLocaleString();
       document.getElementById('totConnImmFdb').innerText = gTotConnImmFdb.toLocaleString();
 
-      // Update Filter button counter
       const totalConfiguredAgents = Object.values(TEAMS).flat().length;
       document.getElementById('activeAgentCountDisplay').innerText = `${totalConfiguredAgents - excludedAgents.size}/${totalConfiguredAgents}`;
     }
 
-    // Modal & Filter Logics
+    // Filter Modal Handling
     function openAgentFilterModal() {
       const container = document.getElementById('filterListBody');
       container.innerHTML = '';
@@ -710,7 +740,6 @@
       });
     }
 
-    // Initialize Default Render
     renderDashboard();
   </script>
 </body>
