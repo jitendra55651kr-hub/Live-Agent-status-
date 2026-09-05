@@ -16,49 +16,93 @@
     header { 
       text-align: center; 
       margin-bottom: 25px; 
-      padding: 24px 20px; 
-      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); 
-      border-radius: 14px; 
+      padding: 26px 20px; 
+      background: linear-gradient(135deg, #0b1329 0%, #1e293b 100%); 
+      border-radius: 16px; 
       border: 1px solid #334155; 
-      box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.25); 
+      box-shadow: 0 12px 30px -5px rgba(15, 23, 42, 0.4); 
     }
     h1 { 
       color: #ffffff; 
-      font-size: 32px; 
+      font-size: 34px; 
       font-weight: 900; 
       letter-spacing: 1.5px; 
       text-transform: uppercase; 
       margin-bottom: 4px; 
-      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); 
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4); 
     }
     
     .header-subtitle {
       color: #38bdf8;
-      font-size: 18px;
+      font-size: 17px;
       font-weight: 900;
-      letter-spacing: 2px;
+      letter-spacing: 2.5px;
       text-transform: uppercase;
-      margin-bottom: 18px;
+      margin-bottom: 22px;
     }
     
-    .upload-container { display: flex; justify-content: center; align-items: center; gap: 15px; flex-wrap: wrap; }
+    /* Sleek Professional Upload Bar */
+    .upload-container { 
+      display: inline-flex; 
+      justify-content: center; 
+      align-items: center; 
+      gap: 16px; 
+      flex-wrap: wrap; 
+      background: rgba(15, 23, 42, 0.6);
+      padding: 8px 18px 8px 10px;
+      border-radius: 50px;
+      border: 1px solid rgba(56, 189, 248, 0.2);
+      backdrop-filter: blur(8px);
+      box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.05);
+    }
     input[type="file"] { display: none; }
+    
     .custom-file-upload { 
-      background: #2563eb; 
+      background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); 
       color: #ffffff; 
-      padding: 12px 28px; 
-      border-radius: 8px; 
+      padding: 11px 24px; 
+      border-radius: 40px; 
       cursor: pointer; 
       font-weight: 800; 
-      transition: all 0.2s ease; 
-      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4); 
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); 
+      box-shadow: 0 4px 18px rgba(37, 99, 235, 0.45); 
       text-transform: uppercase; 
-      font-size: 14px; 
-      letter-spacing: 0.8px; 
+      font-size: 13px; 
+      letter-spacing: 1px; 
       border: 1px solid #60a5fa; 
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
     }
-    .custom-file-upload:hover { background: #1d4ed8; transform: translateY(-1px); }
-    .file-name { font-size: 14px; color: #cbd5e1; font-weight: 600; }
+    .custom-file-upload:hover { 
+      background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); 
+      transform: translateY(-2px); 
+      box-shadow: 0 6px 22px rgba(37, 99, 235, 0.6);
+      border-color: #93c5fd;
+    }
+    .custom-file-upload:active { transform: translateY(0); }
+    .upload-icon { width: 18px; height: 18px; fill: currentColor; }
+
+    .file-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      color: #cbd5e1;
+      font-weight: 600;
+      background: rgba(30, 41, 59, 0.8);
+      padding: 6px 14px;
+      border-radius: 20px;
+      border: 1px solid #334155;
+    }
+    .file-badge .file-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #94a3b8;
+    }
+    .file-badge.active .file-dot { background: #10b981; box-shadow: 0 0 8px #10b981; }
+    .file-badge.active { color: #38bdf8; border-color: #0284c7; }
 
     /* Summary Cards */
     .summary-cards { 
@@ -122,7 +166,7 @@
     th { 
       background-color: #0f172a; 
       color: #ffffff; 
-      padding: 12px 10px; 
+      padding: 13px 10px; 
       font-weight: 900; 
       border-bottom: 3px solid #334155; 
       border-right: 2.5px solid #334155; 
@@ -164,11 +208,11 @@
       box-shadow: 0 0 6px rgba(56, 189, 248, 0.4);
     }
 
-    /* In-Table Team Filter Button */
+    /* In-Table Team Filter Pill Button */
     .agent-filter-pill {
       display: inline-flex;
       align-items: center;
-      gap: 4px;
+      gap: 5px;
       background: #1e293b;
       color: #38bdf8;
       border: 1.5px solid #38bdf8;
@@ -205,7 +249,7 @@
     .agent-name { font-weight: 800; color: #0f172a; text-align: left; padding-left: 16px; font-size: 16px; }
     .metric-val { text-align: center; font-size: 17px; color: #0f172a; font-weight: 900; }
 
-    /* Team Filter Modal */
+    /* Modal / Drawer for Team Filter */
     .filter-modal-overlay {
       display: none;
       position: fixed;
@@ -222,7 +266,7 @@
     .filter-modal-card {
       background: #ffffff;
       border-radius: 14px;
-      max-width: 550px;
+      max-width: 520px;
       width: 100%;
       max-height: 80vh;
       display: flex;
@@ -333,12 +377,20 @@
   <header>
     <h1>AGENT HOURLY REPORT</h1>
     <div class="header-subtitle">UNIT 2</div>
+    
     <div class="upload-container">
       <label for="fileInput" class="custom-file-upload">
-        📁 Upload Excel / CSV File
+        <svg class="upload-icon" viewBox="0 0 24 24">
+          <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/>
+        </svg>
+        Upload Excel / CSV File
       </label>
       <input type="file" id="fileInput" accept=".csv, .xlsx, .xls">
-      <span class="file-name" id="fileName">No file chosen</span>
+      
+      <div class="file-badge" id="fileBadge">
+        <span class="file-dot"></span>
+        <span id="fileName">No file chosen</span>
+      </div>
     </div>
   </header>
 
@@ -420,7 +472,7 @@
     let excludedAgents = new Set();
     let currentActiveTeamForFilter = null;
 
-    // Independent per-team sort tracking
+    // Independent sort state per team
     const teamSortState = {};
     Object.keys(TEAMS).forEach(team => {
       teamSortState[team] = { key: 'imm_fdb', order: 'desc' };
@@ -431,7 +483,10 @@
     function handleFile(e) {
       const file = e.target.files[0];
       if (!file) return;
-      document.getElementById('fileName').innerText = file.name;
+      
+      const fileNameEl = document.getElementById('fileName');
+      fileNameEl.innerText = file.name;
+      document.getElementById('fileBadge').classList.add('active');
 
       const reader = new FileReader();
       reader.onload = function(evt) {
@@ -513,7 +568,7 @@
       renderDashboard();
     }
 
-    // Sort Handler for ONLY the specific clicked team
+    // Sort Handler for ONLY the specific team clicked
     function handleTeamSort(teamName, key) {
       const state = teamSortState[teamName];
       if (state.key === key) {
@@ -537,7 +592,6 @@
         const members = TEAMS[teamName];
         const currentSort = teamSortState[teamName];
 
-        // Column Headers for this specific team
         const headersHtml = SORTABLE_COLUMNS.map(col => {
           const isActive = currentSort.key === col.key;
           const icon = isActive ? (currentSort.order === 'desc' ? '▼ HIGH' : '▲ LOW') : '⇅';
@@ -555,7 +609,6 @@
         const isAgentSort = currentSort.key === 'agent';
         const agentIcon = isAgentSort ? (currentSort.order === 'asc' ? '▲ A-Z' : '▼ Z-A') : '⇅';
 
-        // Filter out excluded agents for this team
         const visibleMembers = members.filter(m => !excludedAgents.has(m));
 
         let teamData = visibleMembers.map(member => {
@@ -580,7 +633,7 @@
           return { name: member, stats: s };
         });
 
-        // Independent Sorting: 0/Blank values always at the bottom
+        // Blanks & 0s always remain at the bottom
         teamData.sort((a, b) => {
           if (currentSort.key === 'agent') {
             return currentSort.order === 'asc' 
@@ -668,7 +721,7 @@
       document.getElementById('totConnImmFdb').innerText = gTotConnImmFdb.toLocaleString();
     }
 
-    // Modal Operations (Strictly for the clicked Team only)
+    // Modal Operations (Strictly per Team)
     function openTeamFilterModal(teamName) {
       currentActiveTeamForFilter = teamName;
       document.getElementById('modalTeamTitle').innerText = `Filter Agents - ${teamName}`;
