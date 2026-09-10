@@ -15,8 +15,8 @@
     /* Main Top Header */
     header { 
       text-align: center; 
-      margin-bottom: 25px; 
-      padding: 26px 20px; 
+      margin-bottom: 20px; 
+      padding: 22px 15px; 
       background: linear-gradient(135deg, #0b1329 0%, #1e293b 100%); 
       border-radius: 16px; 
       border: 1px solid #334155; 
@@ -24,112 +24,124 @@
     }
     h1 { 
       color: #ffffff; 
-      font-size: 28px; 
+      font-size: 26px; 
       font-weight: 900; 
       letter-spacing: 1.5px; 
       text-transform: uppercase; 
       margin-bottom: 4px; 
-      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4); 
     }
     
     .header-subtitle {
       color: #38bdf8;
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 900;
-      letter-spacing: 2.5px;
+      letter-spacing: 2px;
       text-transform: uppercase;
-      margin-bottom: 22px;
+      margin-bottom: 16px;
     }
     
+    .controls-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
     /* Professional Upload Bar */
     .upload-container { 
       display: inline-flex; 
       justify-content: center; 
       align-items: center; 
-      gap: 16px; 
+      gap: 12px; 
       flex-wrap: wrap; 
       background: rgba(15, 23, 42, 0.6);
-      padding: 8px 18px 8px 10px;
-      border-radius: 50px;
+      padding: 6px 14px 6px 8px;
+      border-radius: 40px;
       border: 1px solid rgba(56, 189, 248, 0.2);
-      backdrop-filter: blur(8px);
-      box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.05);
     }
     input[type="file"] { display: none; }
     
     .custom-file-upload { 
       background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); 
       color: #ffffff; 
-      padding: 10px 20px; 
-      border-radius: 40px; 
+      padding: 8px 16px; 
+      border-radius: 30px; 
       cursor: pointer; 
       font-weight: 800; 
-      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); 
-      box-shadow: 0 4px 18px rgba(37, 99, 235, 0.45); 
       text-transform: uppercase; 
-      font-size: 12px; 
-      letter-spacing: 1px; 
+      font-size: 11px; 
+      letter-spacing: 0.8px; 
       border: 1px solid #60a5fa; 
       display: inline-flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
     }
-    .custom-file-upload:hover { 
-      background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); 
-      transform: translateY(-2px); 
-      box-shadow: 0 6px 22px rgba(37, 99, 235, 0.6);
-      border-color: #93c5fd;
-    }
-    .upload-icon { width: 16px; height: 16px; fill: currentColor; }
+    .upload-icon { width: 14px; height: 14px; fill: currentColor; }
 
     .file-badge {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      font-size: 12px;
+      gap: 5px;
+      font-size: 11px;
       color: #cbd5e1;
       font-weight: 600;
       background: rgba(30, 41, 59, 0.8);
-      padding: 6px 14px;
+      padding: 5px 12px;
       border-radius: 20px;
       border: 1px solid #334155;
     }
-    .file-badge .file-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: #94a3b8;
-    }
-    .file-badge.active .file-dot { background: #10b981; box-shadow: 0 0 8px #10b981; }
+    .file-badge .file-dot { width: 6px; height: 6px; border-radius: 50%; background: #94a3b8; }
+    .file-badge.active .file-dot { background: #10b981; box-shadow: 0 0 6px #10b981; }
     .file-badge.active { color: #38bdf8; border-color: #0284c7; }
+
+    /* Screenshot Fit Mode Toggle Button */
+    .view-mode-btn {
+      background: linear-gradient(135deg, #059669 0%, #047857 100%);
+      color: #ffffff;
+      border: 1px solid #34d399;
+      padding: 9px 18px;
+      border-radius: 30px;
+      font-size: 11px;
+      font-weight: 900;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
+      transition: all 0.2s ease;
+    }
+    .view-mode-btn.compact-active {
+      background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+      border-color: #fbbf24;
+      box-shadow: 0 4px 12px rgba(217, 119, 6, 0.3);
+    }
 
     /* Summary Cards */
     .summary-cards { 
       display: grid; 
-      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); 
-      gap: 10px; 
-      margin-bottom: 25px; 
+      grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); 
+      gap: 8px; 
+      margin-bottom: 20px; 
     }
     
     .card { 
       background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); 
-      padding: 14px 10px; 
-      border-radius: 12px; 
+      padding: 10px 8px; 
+      border-radius: 10px; 
       border: 1px solid #0f172a; 
-      border-top: 4px solid #38bdf8; 
+      border-top: 3px solid #38bdf8; 
       text-align: center; 
-      box-shadow: 0 6px 16px rgba(15, 23, 42, 0.3); 
     }
     .card h3 { 
-      font-size: 11px; 
+      font-size: 10px; 
       color: #ffffff; 
       text-transform: uppercase; 
-      margin-bottom: 8px; 
+      margin-bottom: 6px; 
       font-weight: 800; 
-      letter-spacing: 0.5px; 
+      letter-spacing: 0.3px; 
     }
     .card p { 
-      font-size: 22px; 
+      font-size: 18px; 
       font-weight: 900; 
       color: #ffffff; 
     }
@@ -137,51 +149,75 @@
     /* Team Section */
     .team-section { 
       background: #ffffff; 
-      border-radius: 14px; 
+      border-radius: 12px; 
       border: 2px solid #334155; 
-      margin-bottom: 25px; 
+      margin-bottom: 20px; 
       overflow: hidden; 
-      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.12); 
+      box-shadow: 0 6px 16px rgba(15, 23, 42, 0.1); 
     }
     
     .team-header { 
       background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); 
-      padding: 14px 16px; 
-      font-size: 16px; 
+      padding: 12px 14px; 
+      font-size: 15px; 
       font-weight: 900; 
       color: #ffffff; 
-      letter-spacing: 1px; 
+      letter-spacing: 0.8px; 
       border-bottom: 2px solid #334155; 
       text-transform: uppercase; 
       display: flex;
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
-      gap: 10px;
+      gap: 8px;
     }
     
-    /* Responsive Table Container with smooth scrolling */
+    /* Responsive Table Container */
     .table-responsive { 
       width: 100%;
       overflow-x: auto; 
       -webkit-overflow-scrolling: touch;
     }
-    table { width: 100%; border-collapse: collapse; text-align: left; white-space: nowrap; }
     
+    table { width: 100%; border-collapse: collapse; text-align: left; }
+    
+    /* Normal mode: standard wrapping. Compact mode: forces all columns into screen view */
+    body.compact-mode table { table-layout: fixed; width: 100%; }
+    body.compact-mode th, body.compact-mode td {
+      padding: 6px 3px !important;
+      font-size: 10px !important;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    body.compact-mode .agent-name {
+      font-size: 10px !important;
+      padding-left: 6px !important;
+      max-width: 95px;
+    }
+    body.compact-mode th {
+      font-size: 9px !important;
+      line-height: 1.1;
+    }
+    body.compact-mode .sort-icon { font-size: 7px; padding: 1px 2px; }
+
     th { 
       background-color: #0f172a; 
       color: #ffffff; 
-      padding: 12px 10px; 
+      padding: 10px 8px; 
       font-weight: 900; 
       border-bottom: 2px solid #334155; 
-      border-right: 2px solid #334155; 
+      border-right: 1.5px solid #334155; 
       text-transform: uppercase; 
-      font-size: 11px; 
+      font-size: 10.5px; 
       text-align: center; 
-      letter-spacing: 0.5px; 
+      letter-spacing: 0.3px; 
       user-select: none;
+      /* KEY FIX: Allows headers like "Book Consultation" to wrap neatly into multiple lines instead of cutting */
+      white-space: normal !important;
+      word-wrap: break-word;
+      hyphens: auto;
     }
-    /* Sticky First Column (Agent Name) for Mobile View */
+
     th:first-child, td:first-child {
       position: sticky;
       left: 0;
@@ -191,25 +227,27 @@
     th:first-child {
       background-color: #0f172a;
       z-index: 3;
+      text-align: left;
+      padding-left: 10px;
     }
     tr:nth-child(even) td:first-child { background-color: #f8fafc; }
     tr:nth-child(odd) td:first-child { background-color: #ffffff; }
     tr:hover td:first-child { background-color: #e0f2fe; }
 
-    th:first-child { text-align: left; padding-left: 14px; }
     th:last-child { border-right: none; }
     
     .sortable-th { cursor: pointer; transition: background 0.2s ease; }
     .sortable-th:hover { background-color: #1e293b; }
-    .th-content { display: inline-flex; align-items: center; justify-content: center; gap: 4px; }
+    .th-content { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; }
     .sort-icon { 
       display: inline-block; 
-      padding: 2px 4px; 
-      font-size: 9px; 
+      padding: 1px 4px; 
+      font-size: 8px; 
       background: #1e293b; 
       border: 1px solid #475569; 
-      border-radius: 4px; 
+      border-radius: 3px; 
       color: #94a3b8; 
+      white-space: nowrap;
     }
     .sortable-th.active-primary .sort-icon { background: #0284c7; color: #ffffff; border-color: #38bdf8; }
     .sortable-th.active-secondary .sort-icon { background: #475569; color: #38bdf8; border-color: #38bdf8; }
@@ -218,27 +256,27 @@
     .agent-filter-btn {
       display: inline-flex;
       align-items: center;
-      gap: 5px;
+      gap: 4px;
       background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
       color: #ffffff;
       border: 1px solid #38bdf8;
-      padding: 5px 12px;
+      padding: 4px 10px;
       border-radius: 20px;
-      font-size: 10px;
+      font-size: 9px;
       font-weight: 900;
       cursor: pointer;
-      letter-spacing: 0.5px;
       text-transform: uppercase;
-      box-shadow: 0 2px 8px rgba(2, 132, 199, 0.35);
+      box-shadow: 0 2px 6px rgba(2, 132, 199, 0.3);
     }
     
     td { 
-      padding: 10px 10px; 
-      border-bottom: 2px solid #cbd5e1; 
-      border-right: 2px solid #cbd5e1; 
+      padding: 8px 8px; 
+      border-bottom: 1.5px solid #cbd5e1; 
+      border-right: 1.5px solid #cbd5e1; 
       color: #0f172a; 
       font-weight: 700; 
-      font-size: 14px; 
+      font-size: 13px; 
+      white-space: nowrap;
     }
     td:last-child { border-right: none; }
     
@@ -247,8 +285,8 @@
     tr:nth-child(odd) { background-color: #ffffff; }
     tr:hover { background-color: #e0f2fe; }
     
-    .agent-name { font-weight: 800; color: #0f172a; text-align: left; padding-left: 14px; font-size: 14px; }
-    .metric-val { text-align: center; font-size: 14px; color: #0f172a; font-weight: 800; }
+    .agent-name { font-weight: 800; color: #0f172a; text-align: left; padding-left: 10px; font-size: 13px; }
+    .metric-val { text-align: center; font-size: 13px; color: #0f172a; font-weight: 800; }
 
     /* Dark Modal Styling */
     .filter-modal-overlay {
@@ -266,67 +304,67 @@
     
     .filter-modal-card {
       background: #0f172a;
-      border-radius: 18px;
-      max-width: 500px;
+      border-radius: 16px;
+      max-width: 480px;
       width: 100%;
       max-height: 85vh;
       display: flex;
       flex-direction: column;
-      box-shadow: 0 25px 60px -10px rgba(0, 0, 0, 0.8);
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.8);
       border: 1px solid #334155;
       overflow: hidden;
     }
     
     .filter-modal-header {
       background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-      padding: 16px 20px;
+      padding: 14px 18px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       border-bottom: 1px solid #334155;
     }
-    .filter-header-left h2 { font-size: 15px; font-weight: 900; color: #ffffff; text-transform: uppercase; }
-    .filter-header-left p { font-size: 11px; color: #38bdf8; font-weight: 700; margin-top: 2px; }
+    .filter-header-left h2 { font-size: 14px; font-weight: 900; color: #ffffff; text-transform: uppercase; }
+    .filter-header-left p { font-size: 10px; color: #38bdf8; font-weight: 700; margin-top: 2px; }
     .close-modal-btn {
       background: #1e293b;
       border: 1px solid #475569;
       color: #94a3b8;
-      width: 28px;
-      height: 28px;
+      width: 26px;
+      height: 26px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 18px;
+      font-size: 16px;
       cursor: pointer;
     }
 
     .filter-modal-tools {
-      padding: 12px 20px;
+      padding: 10px 18px;
       background: #162032;
       border-bottom: 1px solid #334155;
       display: flex;
-      gap: 8px;
+      gap: 6px;
       flex-wrap: wrap;
       align-items: center;
     }
     .filter-search-box {
       flex: 1;
-      min-width: 150px;
-      padding: 8px 12px;
+      min-width: 140px;
+      padding: 7px 10px;
       background: #0f172a;
       border: 1.5px solid #334155;
-      border-radius: 8px;
-      font-size: 12px;
+      border-radius: 6px;
+      font-size: 11px;
       color: #ffffff;
       outline: none;
     }
     .quick-action-btn {
       background: #1e293b;
       border: 1px solid #475569;
-      padding: 7px 12px;
-      border-radius: 8px;
-      font-size: 10px;
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-size: 9px;
       font-weight: 800;
       cursor: pointer;
       color: #cbd5e1;
@@ -334,41 +372,41 @@
     }
 
     .filter-list-body {
-      padding: 14px 20px;
+      padding: 12px 18px;
       overflow-y: auto;
       display: flex;
       flex-direction: column;
-      gap: 6px;
-      max-height: 320px;
+      gap: 5px;
+      max-height: 280px;
     }
     .agent-checkbox-label {
       display: flex;
       align-items: center;
-      gap: 10px;
-      font-size: 13px;
+      gap: 8px;
+      font-size: 12px;
       font-weight: 700;
       color: #f1f5f9;
       cursor: pointer;
-      padding: 8px 12px;
+      padding: 7px 10px;
       background: #1e293b;
-      border-radius: 8px;
+      border-radius: 6px;
       border: 1px solid #334155;
     }
-    .agent-checkbox-label input { width: 16px; height: 16px; accent-color: #0284c7; cursor: pointer; }
+    .agent-checkbox-label input { width: 15px; height: 15px; accent-color: #0284c7; cursor: pointer; }
 
     .filter-modal-footer {
-      padding: 14px 20px;
+      padding: 12px 18px;
       background: #162032;
       border-top: 1px solid #334155;
       display: flex;
       justify-content: flex-end;
-      gap: 10px;
+      gap: 8px;
     }
     .cancel-btn, .apply-btn {
-      padding: 8px 16px;
+      padding: 7px 14px;
       border-radius: 6px;
       font-weight: 800;
-      font-size: 11px;
+      font-size: 10px;
       text-transform: uppercase;
       cursor: pointer;
     }
@@ -382,19 +420,26 @@
     <h1>AGENT HOURLY REPORT</h1>
     <div class="header-subtitle">UNIT 2</div>
     
-    <div class="upload-container">
-      <label for="fileInput" class="custom-file-upload">
-        <svg class="upload-icon" viewBox="0 0 24 24">
-          <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/>
-        </svg>
-        Upload Excel / CSV File
-      </label>
-      <input type="file" id="fileInput" accept=".csv, .xlsx, .xls">
-      
-      <div class="file-badge" id="fileBadge">
-        <span class="file-dot"></span>
-        <span id="fileName">No file chosen</span>
+    <div class="controls-wrapper">
+      <div class="upload-container">
+        <label for="fileInput" class="custom-file-upload">
+          <svg class="upload-icon" viewBox="0 0 24 24">
+            <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/>
+          </svg>
+          Upload Excel
+        </label>
+        <input type="file" id="fileInput" accept=".csv, .xlsx, .xls">
+        
+        <div class="file-badge" id="fileBadge">
+          <span class="file-dot"></span>
+          <span id="fileName">No file chosen</span>
+        </div>
       </div>
+
+      <!-- Screenshot View Toggle Button -->
+      <button type="button" class="view-mode-btn" id="viewModeToggleBtn" onclick="toggleCompactMode()">
+        📱 Screenshot Fit: OFF
+      </button>
     </div>
   </header>
 
@@ -479,6 +524,7 @@
     let currentAgentStatsMap = {};
     let excludedAgents = new Set();
     let currentActiveTeamForFilter = null;
+    let isCompactModeActive = false;
 
     const teamSortState = {};
     function resetAllTeamSorts() {
@@ -492,6 +538,20 @@
     resetAllTeamSorts();
 
     document.getElementById('fileInput').addEventListener('change', handleFile);
+
+    function toggleCompactMode() {
+      isCompactModeActive = !isCompactModeActive;
+      const btn = document.getElementById('viewModeToggleBtn');
+      if (isCompactModeActive) {
+        document.body.classList.add('compact-mode');
+        btn.classList.add('compact-active');
+        btn.innerText = '📱 Screenshot Fit: ON';
+      } else {
+        document.body.classList.remove('compact-mode');
+        btn.classList.remove('compact-active');
+        btn.innerText = '📱 Screenshot Fit: OFF';
+      }
+    }
 
     function handleFile(e) {
       const file = e.target.files[0];
@@ -739,7 +799,7 @@
                 <thead>
                   <tr>
                     <th class="${isAgentPrim ? 'sortable-th active-primary' : 'sortable-th'}">
-                      <div class="th-content" style="justify-content: flex-start;">
+                      <div class="th-content" style="align-items: flex-start;">
                         <span onclick="handleTeamSort('${teamName}', 'agent')">Agent Name</span>
                         <span class="sort-icon" onclick="handleTeamSort('${teamName}', 'agent')">${agentIcon}</span>
                       </div>
@@ -793,7 +853,7 @@
 
     function closeTeamFilterModal() {
       document.getElementById('filterModalOverlay').classList.remove('open');
-      currentActiveTeamForFilter = None;
+      currentActiveTeamForFilter = null;
     }
 
     function applyTeamFilter() {
@@ -823,7 +883,7 @@
     }
 
     function searchTeamAgents() {
-      const q = document.getElementById('teamAgentSearchBox').value.toLowerCase().trim();
+      const q = document.getElementById('teamAgentSearchBox.value' || document.getElementById('teamAgentSearchBox').value).toLowerCase().trim();
       const labels = document.querySelectorAll('.agent-checkbox-label');
       labels.forEach(lbl => {
         const name = lbl.getAttribute('data-name');
